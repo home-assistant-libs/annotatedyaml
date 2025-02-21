@@ -159,3 +159,8 @@ match = "main"
 [tool.semantic_release.branches.noop]
 match = "(?!main$)"
 prerelease = true
+
+[tool.uv]
+dev-dependencies = [
+    "pytest-codspeed>=3.2.0",
+]
