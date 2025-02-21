@@ -226,7 +226,7 @@ def _parse_yaml(
     secrets: Secrets | None = None,
 ) -> JSON_TYPE:
     """Load a YAML file."""
-    return yaml.load(content, Loader=lambda stream: loader(stream, secrets))  # type: ignore[arg-type]
+    return yaml.load(content, Loader=lambda stream: loader(stream, secrets))  # type: ignore[arg-type]  # noqa: S506
 
 
 @overload
