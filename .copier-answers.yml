@@ -1,0 +1,21 @@
+# Changes here will be overwritten by Copier
+_commit: 665c4e2
+_src_path: gh:browniebroke/pypackage-template
+add_me_as_contributor: false
+copyright_year: '2025'
+documentation: true
+email: hello@home-assistant.io
+full_name: Home Assistant Devs
+github_username: home-assistant-libs
+has_cli: false
+initial_commit: true
+is_django_package: false
+open_source_license: Apache Software License 2.0
+package_name: annotatedyaml
+project_name: annotatedyaml
+project_short_description: Annotated YAML that supports secrets for Python
+project_slug: annotatedyaml
+run_uv_sync: true
+setup_github: true
+setup_pre_commit: true
+
