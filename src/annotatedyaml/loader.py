@@ -22,10 +22,10 @@ except ImportError:
         SafeLoader as FastestAvailableSafeLoader,
     )
 
-from homeassistant.exceptions import HomeAssistantError
 from propcache.api import cached_property
 
 from .const import SECRET_YAML
+from .exceptions import YAMLException, YamlTypeError
 from .objects import Input, NodeDictClass, NodeListClass, NodeStrClass
 
 # mypy: allow-untyped-calls, no-warn-return-any
@@ -33,10 +33,6 @@ from .objects import Input, NodeDictClass, NodeListClass, NodeStrClass
 JSON_TYPE = list | dict | str
 
 _LOGGER = logging.getLogger(__name__)
-
-
-class YamlTypeError(HomeAssistantError):
-    """Raised by load_yaml_dict if top level data is not a dict."""
 
 
 class Secrets:
@@ -71,7 +67,7 @@ class Secrets:
                 )
                 return secrets[secret]
 
-        raise HomeAssistantError(f"Secret {secret} not defined")
+        raise YAMLException(f"Secret {secret} not defined")
 
     def _load_secret_yaml(self, secret_dir: Path) -> dict[str, str]:
         """Load the secrets yaml from path."""
@@ -83,7 +79,7 @@ class Secrets:
             secrets = load_yaml(str(secret_path))
 
             if not isinstance(secrets, dict):
-                raise HomeAssistantError("Secrets is not a dictionary")
+                raise YAMLException("Secrets is not a dictionary")
 
             if "logger" in secrets:
                 logger = str(secrets["logger"]).lower()
@@ -160,7 +156,7 @@ def load_yaml(
     """
     Load a YAML file.
 
-    If opening the file raises an OSError it will be wrapped in a HomeAssistantError,
+    If opening the file raises an OSError it will be wrapped in a YAMLException,
     except for FileNotFoundError which will be re-raised.
     """
     try:
@@ -168,11 +164,11 @@ def load_yaml(
             return parse_yaml(conf_file, secrets)
     except UnicodeDecodeError as exc:
         _LOGGER.error("Unable to read file %s: %s", fname, exc)
-        raise HomeAssistantError(exc) from exc
+        raise YAMLException(exc) from exc
     except FileNotFoundError:
         raise
     except OSError as exc:
-        raise HomeAssistantError(exc) from exc
+        raise YAMLException(exc) from exc
 
 
 def load_yaml_dict(
@@ -217,7 +213,7 @@ def _parse_yaml_python(
         return _parse_yaml(PythonSafeLoader, content, secrets)
     except yaml.YAMLError as exc:
         _LOGGER.error(str(exc))
-        raise HomeAssistantError(exc) from exc
+        raise YAMLException(exc) from exc
 
 
 def _parse_yaml(
@@ -299,9 +295,7 @@ def _raise_if_no_value[NodeT: yaml.nodes.Node, _R](
 ) -> Callable[[LoaderType, NodeT], _R]:
     def wrapper(loader: LoaderType, node: NodeT) -> _R:
         if not node.value:
-            raise HomeAssistantError(
-                f"{node.start_mark}: {node.tag} needs an argument."
-            )
+            raise YAMLException(f"{node.start_mark}: {node.tag} needs an argument.")
         return func(loader, node)
 
     return wrapper
@@ -323,9 +317,7 @@ def _include_yaml(loader: LoaderType, node: yaml.nodes.Node) -> JSON_TYPE:
             loaded_yaml = NodeDictClass()
         return _add_reference(loaded_yaml, loader, node)
     except FileNotFoundError as exc:
-        raise HomeAssistantError(
-            f"{node.start_mark}: Unable to read file {fname}"
-        ) from exc
+        raise YAMLException(f"{node.start_mark}: Unable to read file {fname}") from exc
 
 
 def _is_file_valid(name: str) -> bool:
@@ -474,13 +466,13 @@ def _env_var_yaml(loader: LoaderType, node: yaml.nodes.Node) -> str:
     if args[0] in os.environ:
         return os.environ[args[0]]
     _LOGGER.error("Environment variable %s not defined", node.value)
-    raise HomeAssistantError(node.value)
+    raise YAMLException(node.value)
 
 
 def secret_yaml(loader: LoaderType, node: yaml.nodes.Node) -> JSON_TYPE:
     """Load secrets and embed it into the configuration YAML."""
     if loader.secrets is None:
-        raise HomeAssistantError("Secrets not supported in this YAML file")
+        raise YAMLException("Secrets not supported in this YAML file")
 
     return loader.secrets.get(loader.get_name, node.value)
 
