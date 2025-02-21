@@ -2,8 +2,7 @@
 
 import pytest
 
-from annotatedyaml import (Input, UndefinedSubstitution, extract_inputs,
-                           substitute)
+from annotatedyaml import Input, UndefinedSubstitution, extract_inputs, substitute
 
 
 def test_extract_inputs() -> None:

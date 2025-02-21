@@ -9,8 +9,7 @@ import pytest
 import annotatedyaml as yaml_util
 from annotatedyaml import YAMLException
 from annotatedyaml import loader as yaml_loader
-from tests.common import (YAML_CONFIG_FILE, get_test_config_dir,
-                          patch_yaml_files)
+from tests.common import YAML_CONFIG_FILE, get_test_config_dir, patch_yaml_files
 
 
 @dataclass(frozen=True)

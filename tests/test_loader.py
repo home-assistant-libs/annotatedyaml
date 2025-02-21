@@ -14,7 +14,7 @@ import voluptuous as vol
 import yaml as pyyaml
 
 import annotatedyaml as yaml_util
-from annotatedyaml import YAMLException, YamlTypeError
+from annotatedyaml import YAMLException
 from annotatedyaml import loader as yaml_loader
 from tests.common import YAML_CONFIG_FILE
 
@@ -90,11 +90,11 @@ def test_no_key(mock_yaml: None) -> None:
 @pytest.mark.usefixtures("try_both_loaders")
 def test_environment_variable() -> None:
     """Test config file with environment variable."""
-    os.environ["PASSWORD"] = "secret_password"
+    os.environ["PASSWORD"] = "secret_password"  # noqa: S105
     conf = "password: !env_var PASSWORD"
     with io.StringIO(conf) as file:
         doc = yaml_loader.parse_yaml(file)
-    assert doc["password"] == "secret_password"
+    assert doc["password"] == "secret_password"  # noqa: S105
     del os.environ["PASSWORD"]
 
 
@@ -104,7 +104,7 @@ def test_environment_variable_default() -> None:
     conf = "password: !env_var PASSWORD secret_password"
     with io.StringIO(conf) as file:
         doc = yaml_loader.parse_yaml(file)
-    assert doc["password"] == "secret_password"
+    assert doc["password"] == "secret_password"  # noqa: S105
 
 
 @pytest.mark.usefixtures("try_both_loaders")

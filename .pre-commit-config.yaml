@@ -55,3 +55,4 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies: ["types-PyYAML"]
+        exclude: "tests"
