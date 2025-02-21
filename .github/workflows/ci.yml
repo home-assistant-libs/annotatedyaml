@@ -51,7 +51,7 @@ jobs:
         uses: CodSpeedHQ/action@v3
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
-          run: pytest tests/benchmarks --codspeed
+          run: uv run pytest tests/benchmarks --codspeed
 
   test:
     strategy:
