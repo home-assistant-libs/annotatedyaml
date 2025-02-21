@@ -12,6 +12,7 @@ __all__ = [
     "Input",
     "Secrets",
     "UndefinedSubstitution",
+    "YAMLException",
     "YamlTypeError",
     "dump",
     "extract_inputs",
@@ -21,5 +22,4 @@ __all__ = [
     "save_yaml",
     "secret_yaml",
     "substitute",
-    "YAMLException",
 ]

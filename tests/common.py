@@ -4,9 +4,8 @@ import logging
 import os
 import pathlib
 from io import StringIO
-from types import FrameType
 from typing import Any, LiteralString
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from annotatedyaml import loader as yaml_loader
 

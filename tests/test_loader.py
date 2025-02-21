@@ -14,7 +14,7 @@ import voluptuous as vol
 import yaml as pyyaml
 
 import annotatedyaml as yaml_util
-from annotatedyaml import YAMLException, YamlTypeError
+from annotatedyaml import YAMLException
 from annotatedyaml import loader as yaml_loader
 from tests.common import YAML_CONFIG_FILE
 
