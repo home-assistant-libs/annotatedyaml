@@ -26,6 +26,7 @@ classifiers = [
 ]
 
 dependencies = [
+    "pyyaml>=6.0.1",
 ]
 urls."Bug Tracker" = "https://github.com/home-assistant-libs/annotatedyaml/issues"
 urls.Changelog = "https://github.com/home-assistant-libs/annotatedyaml/blob/main/CHANGELOG.md"
