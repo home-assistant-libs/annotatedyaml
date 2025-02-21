@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.1 (2025-02-21)
+
+### Bug fixes
+
+- Set minimum python to 3.12 (#5) ([`44db528`](https://github.com/home-assistant-libs/annotatedyaml/commit/44db528d79203a70219198b4c639f073e6c7aef2))
+
 ## v0.1.0 (2025-02-21)
 
 ### Features
