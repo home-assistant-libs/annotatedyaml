@@ -484,9 +484,9 @@ def add_constructor(tag: Any, constructor: Any) -> None:
 
 
 add_constructor("!include", _include_yaml)
-add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _handle_mapping_tag)
-add_constructor(yaml.resolver.BaseResolver.DEFAULT_SCALAR_TAG, _handle_scalar_tag)
-add_constructor(yaml.resolver.BaseResolver.DEFAULT_SEQUENCE_TAG, _construct_seq)
+# add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _handle_mapping_tag)
+# add_constructor(yaml.resolver.BaseResolver.DEFAULT_SCALAR_TAG, _handle_scalar_tag)
+# add_constructor(yaml.resolver.BaseResolver.DEFAULT_SEQUENCE_TAG, _construct_seq)
 add_constructor("!env_var", _env_var_yaml)
 add_constructor("!secret", secret_yaml)
 add_constructor("!include_dir_list", _include_dir_list_yaml)
