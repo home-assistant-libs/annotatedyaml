@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.0 (2025-03-16)
+
+### Features
+
+- Check dict length with node length for quick unique key check (#10) ([`b7e7ad5`](https://github.com/home-assistant-libs/annotatedyaml/commit/b7e7ad5134527e9192be7dbcd24d4d9d73a0561d))
+
 ## v0.1.1 (2025-02-21)
 
 ### Bug fixes

@@ -406,6 +406,16 @@ def _handle_mapping_tag(
     loader.flatten_mapping(node)
     nodes = loader.construct_pairs(node)
 
+    # Check first if length of dict is equal to the length of the nodes
+    # This is a quick way to check if the keys are unique
+    try:
+        conv_dict = dict(nodes)
+    except TypeError:
+        pass
+    else:
+        if len(conv_dict) == len(nodes):
+            return _add_reference_to_node_class(NodeDictClass(conv_dict), loader, node)
+
     seen: dict = {}
     for (key, _), (child_node, _) in zip(nodes, node.value, strict=False):
         line = child_node.start_mark.line
