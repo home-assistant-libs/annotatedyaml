@@ -387,14 +387,13 @@ def _handle_mapping_tag(
     # Check first if length of dict is equal to the length of the nodes
     # This is a quick way to check if the keys are unique
     try:
-        conv_dict = dict(nodes)
+        conv_dict = NodeDictClass(nodes)
     except TypeError:
         pass
     else:
         if len(conv_dict) == len(nodes):
-            mapping = NodeDictClass(conv_dict)
-            _add_reference_to_node_dict_class(mapping, loader, node)
-            return mapping
+            _add_reference_to_node_dict_class(conv_dict, loader, node)
+            return conv_dict
 
     seen: dict = {}
     for (key, _), (child_node, _) in zip(nodes, node.value, strict=False):
