@@ -458,6 +458,7 @@ def test_c_loader_is_available_in_ci() -> None:
 
 
 @pytest.mark.usefixtures("try_both_loaders")
+@pytest.mark.asyncio
 async def test_loading_actual_file_with_syntax_error() -> None:
     """Test loading a real file with syntax errors."""
     fixture_path = pathlib.Path(__file__).parent.joinpath("fixtures", "bad.yaml.txt")
