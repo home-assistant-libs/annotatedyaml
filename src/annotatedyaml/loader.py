@@ -8,9 +8,11 @@ import os
 from collections.abc import Callable, Iterator
 from io import StringIO, TextIOWrapper
 from pathlib import Path
-from typing import Any, TextIO, overload
+from typing import Any, TextIO
 
 import yaml
+
+from .reference import _add_reference, _add_reference_to_node_class
 
 try:
     from yaml import CSafeLoader as FastestAvailableSafeLoader
@@ -26,7 +28,10 @@ from propcache.api import cached_property
 
 from .const import SECRET_YAML
 from .exceptions import YAMLException, YamlTypeError
-from .objects import Input, NodeDictClass, NodeListClass, NodeStrClass
+from .objects import Input, NodeDictClass, NodeStrClass
+
+type LoaderType = FastSafeLoader | PythonSafeLoader
+
 
 # mypy: allow-untyped-calls, no-warn-return-any
 
@@ -147,9 +152,6 @@ class PythonSafeLoader(yaml.SafeLoader, _LoaderMixin):
         self.secrets = secrets
 
 
-type LoaderType = FastSafeLoader | PythonSafeLoader
-
-
 def load_yaml(
     fname: str | os.PathLike[str], secrets: Secrets | None = None
 ) -> JSON_TYPE | None:
@@ -223,71 +225,6 @@ def _parse_yaml(
 ) -> JSON_TYPE:
     """Load a YAML file."""
     return yaml.load(content, Loader=lambda stream: loader(stream, secrets))  # type: ignore[arg-type]  # noqa: S506
-
-
-@overload
-def _add_reference(
-    obj: list | NodeListClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeListClass: ...
-
-
-@overload
-def _add_reference(
-    obj: str | NodeStrClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeStrClass: ...
-
-
-@overload
-def _add_reference(
-    obj: dict | NodeDictClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeDictClass: ...
-
-
-def _add_reference(
-    obj: dict | list | str | NodeDictClass | NodeListClass | NodeStrClass,
-    loader: LoaderType,
-    node: yaml.nodes.Node,
-) -> NodeDictClass | NodeListClass | NodeStrClass:
-    """Add file reference information to an object."""
-    if isinstance(obj, list):
-        obj = NodeListClass(obj)
-    elif isinstance(obj, str):
-        obj = NodeStrClass(obj)
-    elif isinstance(obj, dict):
-        obj = NodeDictClass(obj)
-    return _add_reference_to_node_class(obj, loader, node)
-
-
-@overload
-def _add_reference_to_node_class(
-    obj: NodeListClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeListClass: ...
-
-
-@overload
-def _add_reference_to_node_class(
-    obj: NodeStrClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeStrClass: ...
-
-
-@overload
-def _add_reference_to_node_class(
-    obj: NodeDictClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeDictClass: ...
-
-
-def _add_reference_to_node_class(
-    obj: NodeDictClass | NodeListClass | NodeStrClass,
-    loader: LoaderType,
-    node: yaml.nodes.Node,
-) -> NodeDictClass | NodeListClass | NodeStrClass:
-    """Add file reference information to a node class object."""
-    try:  # suppress is much slower
-        obj.__config_file__ = loader.get_name
-        obj.__line__ = node.start_mark.line + 1
-    except AttributeError:
-        pass
-    return obj
 
 
 def _raise_if_no_value[NodeT: yaml.nodes.Node, _R](

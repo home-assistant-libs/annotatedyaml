@@ -17,6 +17,7 @@ _LOGGER = logging.getLogger(__name__)
 
 TO_CYTHONIZE = [
     "src/annotatedyaml/objects.py",
+    "src/annotatedyaml/reference.py",
 ]
 
 EXTENSIONS = [
