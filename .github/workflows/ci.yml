@@ -61,6 +61,9 @@ jobs:
           - "3.13"
         os:
           - ubuntu-latest
+        extension:
+          - "skip_cython"
+          - "use_cython"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -69,7 +72,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - uses: astral-sh/setup-uv@v5
-      - run: uv sync --no-python-downloads
+      - name: Install Dependencies
+        run: |
+          if [ "${{ matrix.extension }}" = "skip_cython" ]; then
+            SKIP_CYTHON=1 uv sync --no-python-downloads
+          else
+            REQUIRE_CYTHON=1 uv sync --no-python-downloads
+          fi
         shell: bash
       - run: uv run pytest
         shell: bash
