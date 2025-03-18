@@ -14,7 +14,7 @@ except ImportError:
 _LOGGER = logging.getLogger(__name__)
 
 TO_CYTHONIZE = [
-    "src/annotatedyaml/objects.py",
+    #    "src/annotatedyaml/objects.py",
     "src/annotatedyaml/reference.py",
 ]
 
