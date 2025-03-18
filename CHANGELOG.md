@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.0 (2025-03-18)
+
+### Features
+
+- Improve performance of adding references with cython pxds (#16) ([`182fa5b`](https://github.com/home-assistant-libs/annotatedyaml/commit/182fa5b28b513a6416fc5738bae2b741b5174c03))
+
 ## v0.2.0 (2025-03-16)
 
 ### Features
