@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.1 (2025-03-18)
+
+### Bug fixes
+
+- Disable cython build for release build (#18) ([`ee94448`](https://github.com/home-assistant-libs/annotatedyaml/commit/ee94448f5cc7c8d67a11eccefc863e6f500b59d8))
+
 ## v0.4.0 (2025-03-18)
 
 ### Features
