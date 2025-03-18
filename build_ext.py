@@ -5,8 +5,6 @@ import os
 from distutils.command.build_ext import build_ext
 from typing import Any
 
-import setuptools
-
 try:
     from setuptools import Extension
 except ImportError:
@@ -32,20 +30,19 @@ EXTENSIONS = [
 
 
 class BuildExt(build_ext):
-    """Build extension class."""
+    """Build extension."""
 
     def build_extensions(self) -> None:
         """Build extensions."""
         try:
             super().build_extensions()
-        except Exception:
-            _LOGGER.info("Failed to build cython extensions")
+        except Exception as ex:  # nosec
+            _LOGGER.debug("Failed to build extensions: %s", ex, exc_info=True)
+            pass
 
 
-def _build(setup_kwargs: dict[str, Any]) -> None:
-    setup_kwargs["exclude_package_data"] = {
-        pkg: ["*.c"] for pkg in setup_kwargs.get("packages", [setup_kwargs["name"]])
-    }
+def build(setup_kwargs: Any) -> None:
+    """Build optional cython modules."""
     if os.environ.get("SKIP_CYTHON"):
         return
     try:
@@ -60,11 +57,10 @@ def _build(setup_kwargs: dict[str, Any]) -> None:
                 "cmdclass": {"build_ext": BuildExt},
             }
         )
+        setup_kwargs["exclude_package_data"] = {
+            pkg: ["*.c"] for pkg in setup_kwargs["packages"]
+        }
     except Exception:
         if os.environ.get("REQUIRE_CYTHON"):
             raise
-
-
-setup_kwargs = {"name": "annotatedyaml"}
-_build(setup_kwargs)
-setuptools.setup(**setup_kwargs)
+        pass
