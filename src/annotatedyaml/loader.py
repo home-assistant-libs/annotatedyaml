@@ -27,6 +27,11 @@ from propcache.api import cached_property
 from .const import SECRET_YAML
 from .exceptions import YAMLException, YamlTypeError
 from .objects import Input, NodeDictClass, NodeListClass, NodeStrClass
+from .reference import (
+    _add_reference_to_node_dict_class,
+    _add_reference_to_node_list_class,
+    _add_reference_to_node_str_class,
+)
 
 # mypy: allow-untyped-calls, no-warn-return-any
 
@@ -251,42 +256,13 @@ def _add_reference(
     """Add file reference information to an object."""
     if isinstance(obj, list):
         obj = NodeListClass(obj)
+        _add_reference_to_node_list_class(obj, loader, node)
     elif isinstance(obj, str):
         obj = NodeStrClass(obj)
+        _add_reference_to_node_str_class(obj, loader, node)
     elif isinstance(obj, dict):
         obj = NodeDictClass(obj)
-    return _add_reference_to_node_class(obj, loader, node)
-
-
-@overload
-def _add_reference_to_node_class(
-    obj: NodeListClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeListClass: ...
-
-
-@overload
-def _add_reference_to_node_class(
-    obj: NodeStrClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeStrClass: ...
-
-
-@overload
-def _add_reference_to_node_class(
-    obj: NodeDictClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeDictClass: ...
-
-
-def _add_reference_to_node_class(
-    obj: NodeDictClass | NodeListClass | NodeStrClass,
-    loader: LoaderType,
-    node: yaml.nodes.Node,
-) -> NodeDictClass | NodeListClass | NodeStrClass:
-    """Add file reference information to a node class object."""
-    try:  # suppress is much slower
-        obj.__config_file__ = loader.get_name
-        obj.__line__ = node.start_mark.line + 1
-    except AttributeError:
-        pass
+        _add_reference_to_node_dict_class(obj, loader, node)
     return obj
 
 
@@ -350,7 +326,8 @@ def _include_dir_named_yaml(loader: LoaderType, node: yaml.nodes.Node) -> NodeDi
             # as an empty dictionary
             loaded_yaml = NodeDictClass()
         mapping[filename] = loaded_yaml
-    return _add_reference_to_node_class(mapping, loader, node)
+    _add_reference_to_node_dict_class(mapping, loader, node)
+    return mapping
 
 
 @_raise_if_no_value
@@ -366,7 +343,8 @@ def _include_dir_merge_named_yaml(
         loaded_yaml = load_yaml(fname, loader.secrets)
         if isinstance(loaded_yaml, dict):
             mapping.update(loaded_yaml)
-    return _add_reference_to_node_class(mapping, loader, node)
+    _add_reference_to_node_dict_class(mapping, loader, node)
+    return mapping
 
 
 @_raise_if_no_value
@@ -409,12 +387,13 @@ def _handle_mapping_tag(
     # Check first if length of dict is equal to the length of the nodes
     # This is a quick way to check if the keys are unique
     try:
-        conv_dict = dict(nodes)
+        conv_dict = NodeDictClass(nodes)
     except TypeError:
         pass
     else:
         if len(conv_dict) == len(nodes):
-            return _add_reference_to_node_class(NodeDictClass(conv_dict), loader, node)
+            _add_reference_to_node_dict_class(conv_dict, loader, node)
+            return conv_dict
 
     seen: dict = {}
     for (key, _), (child_node, _) in zip(nodes, node.value, strict=False):
@@ -447,7 +426,9 @@ def _handle_mapping_tag(
             )
         seen[key] = line
 
-    return _add_reference_to_node_class(NodeDictClass(nodes), loader, node)
+    mapping = NodeDictClass(nodes)
+    _add_reference_to_node_dict_class(mapping, loader, node)
+    return mapping
 
 
 def _construct_seq(loader: LoaderType, node: yaml.nodes.Node) -> JSON_TYPE:
@@ -463,7 +444,9 @@ def _handle_scalar_tag(
     obj = node.value
     if not isinstance(obj, str):
         return obj
-    return _add_reference_to_node_class(NodeStrClass(obj), loader, node)
+    str_class = NodeStrClass(obj)
+    _add_reference_to_node_str_class(str_class, loader, node)
+    return str_class
 
 
 def _env_var_yaml(loader: LoaderType, node: yaml.nodes.Node) -> str:

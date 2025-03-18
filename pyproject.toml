@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = [ "setuptools" ]
+requires = [ "setuptools" , "Cython>=3" ]
 
 [project]
 name = "annotatedyaml"
@@ -21,6 +21,7 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Topic :: Software Development :: Libraries",
 ]
+
 
 dependencies = [
     "propcache>0.1",
@@ -89,6 +90,7 @@ addopts = """\
     --cov-report=xml
     """
 pythonpath = [ "src" ]
+
 
 [tool.coverage.run]
 branch = true
