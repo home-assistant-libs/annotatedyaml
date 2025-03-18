@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.0 (2025-03-18)
+
+### Features
+
+- Add wheel builds (#17) ([`5ed4496`](https://github.com/home-assistant-libs/annotatedyaml/commit/5ed4496a4523416298c982c875eb2ba2aacd0730))
+
 ## v0.3.0 (2025-03-18)
 
 ### Features
