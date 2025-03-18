@@ -1,4 +1,4 @@
-"""Custom loader."""
+"""Constructors for the custom loader."""
 
 from __future__ import annotations
 
