@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.3 (2025-03-18)
+
+### Bug fixes
+
+- Move exclude to tool.poetry section in pyproject.toml (#22) ([`ccdeb88`](https://github.com/home-assistant-libs/annotatedyaml/commit/ccdeb88900bc402c198e36ac8931ab07e6737f35))
+- Export node classes at top level (#20) ([`9bc1de6`](https://github.com/home-assistant-libs/annotatedyaml/commit/9bc1de6d276adb374e213c88d5b374afccaf494e))
+
 ## v0.4.2 (2025-03-18)
 
 ### Bug fixes
