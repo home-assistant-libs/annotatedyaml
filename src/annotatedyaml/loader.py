@@ -27,11 +27,7 @@ from propcache.api import cached_property
 from .const import SECRET_YAML
 from .exceptions import YAMLException, YamlTypeError
 from .objects import Input, NodeDictClass, NodeListClass, NodeStrClass
-from .reference import (
-    _add_reference_to_node_dict_class,
-    _add_reference_to_node_list_class,
-    _add_reference_to_node_str_class,
-)
+from .reference import _add_reference_to_node_class
 
 # mypy: allow-untyped-calls, no-warn-return-any
 
@@ -256,13 +252,11 @@ def _add_reference(
     """Add file reference information to an object."""
     if isinstance(obj, list):
         obj = NodeListClass(obj)
-        _add_reference_to_node_list_class(obj, loader, node)
     elif isinstance(obj, str):
         obj = NodeStrClass(obj)
-        _add_reference_to_node_str_class(obj, loader, node)
     elif isinstance(obj, dict):
         obj = NodeDictClass(obj)
-        _add_reference_to_node_dict_class(obj, loader, node)
+    _add_reference_to_node_class(obj, loader, node)
     return obj
 
 
@@ -326,7 +320,7 @@ def _include_dir_named_yaml(loader: LoaderType, node: yaml.nodes.Node) -> NodeDi
             # as an empty dictionary
             loaded_yaml = NodeDictClass()
         mapping[filename] = loaded_yaml
-    _add_reference_to_node_dict_class(mapping, loader, node)
+    _add_reference_to_node_class(mapping, loader, node)
     return mapping
 
 
@@ -343,7 +337,7 @@ def _include_dir_merge_named_yaml(
         loaded_yaml = load_yaml(fname, loader.secrets)
         if isinstance(loaded_yaml, dict):
             mapping.update(loaded_yaml)
-    _add_reference_to_node_dict_class(mapping, loader, node)
+    _add_reference_to_node_class(mapping, loader, node)
     return mapping
 
 
@@ -392,7 +386,7 @@ def _handle_mapping_tag(
         pass
     else:
         if len(conv_dict) == len(nodes):
-            _add_reference_to_node_dict_class(conv_dict, loader, node)
+            _add_reference_to_node_class(conv_dict, loader, node)
             return conv_dict
 
     seen: dict = {}
@@ -427,7 +421,7 @@ def _handle_mapping_tag(
         seen[key] = line
 
     mapping = NodeDictClass(nodes)
-    _add_reference_to_node_dict_class(mapping, loader, node)
+    _add_reference_to_node_class(mapping, loader, node)
     return mapping
 
 
@@ -445,7 +439,7 @@ def _handle_scalar_tag(
     if not isinstance(obj, str):
         return obj
     str_class = NodeStrClass(obj)
-    _add_reference_to_node_str_class(str_class, loader, node)
+    _add_reference_to_node_class(str_class, loader, node)
     return str_class
 
 
