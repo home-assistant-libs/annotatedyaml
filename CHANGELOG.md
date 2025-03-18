@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.2 (2025-03-18)
+
+### Bug fixes
+
+- Ensure wheels build with correct platform tags (#19) ([`c2a1fdb`](https://github.com/home-assistant-libs/annotatedyaml/commit/c2a1fdbe106cf736a178355a97e32e85c6090bc7))
+
 ## v0.4.1 (2025-03-18)
 
 ### Bug fixes
