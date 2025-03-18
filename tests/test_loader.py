@@ -19,6 +19,13 @@ from annotatedyaml import loader as yaml_loader
 from tests.common import YAML_CONFIG_FILE
 
 
+def _get_annotation(item: Any) -> tuple[str, int | str] | None:
+    if not hasattr(item, "__config_file__"):
+        return None
+
+    return (item.__config_file__, getattr(item, "__line__", "?"))
+
+
 @pytest.fixture(params=["enable_c_loader", "disable_c_loader"])
 def try_both_loaders(request: pytest.FixtureRequest) -> Generator[None]:
     """Disable the yaml c loader."""
@@ -584,3 +591,11 @@ def test_load_missing_included_file(mock_yaml: None) -> None:
     """Test loading a file that includes a missing file."""
     with pytest.raises(YAMLException):
         yaml_loader.load_yaml(YAML_CONFIG_FILE)
+
+
+@pytest.mark.parametrize("mock_yaml", ['key: [1, "2", 3]'])
+@pytest.mark.usefixtures("try_both_dumpers", "patch_yaml_config")
+def test_getting_annotation(mock_yaml: None) -> None:
+    """Test we can fetch annotations in pure python."""
+    data = yaml_loader.load_yaml(YAML_CONFIG_FILE)
+    assert _get_annotation(data) == ("test.yaml", 1)
