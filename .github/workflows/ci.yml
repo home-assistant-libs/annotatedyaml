@@ -39,18 +39,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - uses: astral-sh/setup-uv@v5
-        env:
-          REQUIRE_CYTHON: 1
-      - run: uv sync --no-python-downloads
-        env:
-          REQUIRE_CYTHON: 1
+      - uses: snok/install-poetry@v1.4.1
+      - name: Install Dependencies
+        run: |
+          REQUIRED_CYTHON=1 poetry install --only=main,dev
         shell: bash
       - name: Run benchmarks
         uses: CodSpeedHQ/action@v3
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
-          run: uv run pytest tests/benchmarks --codspeed
+          run: poetry run pytest tests/benchmarks --codspeed
 
   test:
     strategy:
@@ -71,16 +69,16 @@ jobs:
         id: setup-python
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: astral-sh/setup-uv@v5
+      - uses: snok/install-poetry@v1.4.1
       - name: Install Dependencies
         run: |
           if [ "${{ matrix.extension }}" = "skip_cython" ]; then
-            SKIP_CYTHON=1 uv sync --no-python-downloads
+            SKIP_CYTHON=1 poetry install --only=main,dev
           else
-            REQUIRE_CYTHON=1 uv sync --no-python-downloads
+            poetry install --only=main,dev
           fi
         shell: bash
-      - run: uv run pytest
+      - run: poetry run pytest
         shell: bash
       - uses: codecov/codecov-action@v5
         with:

@@ -24,7 +24,7 @@ classifiers = [
 
 dependencies = [
     "propcache>0.1",
-    "pyyaml>=6.0.1",
+    "pyyaml (>=6.0.1)",
     "voluptuous>0.15",
 ]
 urls."Bug Tracker" = "https://github.com/home-assistant-libs/annotatedyaml/issues"
@@ -36,6 +36,7 @@ urls.repository = "https://github.com/home-assistant-libs/annotatedyaml"
 dev = [
   "pytest>=8,<9",
   "pytest-cov>=6,<7",
+  "pytest-codspeed>=3.2.0"
 ]
 docs = [
   "furo>=2023.5.20",
@@ -132,12 +133,7 @@ version_variables = [
   "src/annotatedyaml/__init__.py:__version__",
   "docs/conf.py:release",
 ]
-build_command = """
-pip install uv
-uv lock
-git add uv.lock
-uv build
-"""
+build_command = "pip install poetry && poetry build"
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = [
@@ -160,12 +156,6 @@ match = "main"
 [tool.semantic_release.branches.noop]
 match = "(?!main$)"
 prerelease = true
-
-[tool.uv]
-dev-dependencies = [
-    "pytest-codspeed>=3.2.0",
-]
-
 
 [tool.poetry.build]
 generate-setup-file = true
