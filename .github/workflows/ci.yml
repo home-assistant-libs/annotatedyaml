@@ -95,6 +95,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: release
     concurrency: release
+    env:
+      SKIP_CYTHON: 1
     permissions:
       id-token: write
       attestations: write
