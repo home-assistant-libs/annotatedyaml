@@ -257,7 +257,7 @@ def _add_reference(
     elif isinstance(obj, dict):
         obj = NodeDictClass(obj)
     else:
-        raise TypeError(f"Unsupported type {type(obj)}")
+        return obj  # type: ignore[unreachable]
     _add_reference_to_node_class(obj, loader, node)
     return obj
 
