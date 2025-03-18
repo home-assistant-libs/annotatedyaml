@@ -24,7 +24,7 @@ classifiers = [
 
 dependencies = [
     "propcache>0.1",
-    "pyyaml (>=6.0.1)",
+    "pyyaml>=6.0.1",
     "voluptuous>0.15",
 ]
 urls."Bug Tracker" = "https://github.com/home-assistant-libs/annotatedyaml/issues"
