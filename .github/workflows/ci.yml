@@ -100,6 +100,10 @@ jobs:
       attestations: write
       contents: write
 
+    outputs:
+      released: ${{ steps.release.outputs.released }}
+      newest_release_tag: ${{ steps.release.outputs.tag }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -142,3 +146,110 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.release.outputs.tag }}
+
+  build_wheels:
+    needs: [release]
+    if: needs.release.outputs.released == 'true'
+    name: Wheels for ${{ matrix.os }} (${{ matrix.musl == 'musllinux' && 'musllinux' || 'manylinux' }}) ${{ matrix.qemu }} ${{ matrix.pyver }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          [
+            windows-latest,
+            ubuntu-24.04-arm,
+            ubuntu-latest,
+            macos-13,
+            macos-latest,
+          ]
+        qemu: [""]
+        musl: [""]
+        pyver: [""]
+        include:
+          - os: ubuntu-latest
+            musl: "musllinux"
+          - os: ubuntu-24.04-arm
+            musl: "musllinux"
+          # qemu is slow, make a single
+          # runner per Python version
+          - os: ubuntu-latest
+            qemu: armv7l
+            musl: "musllinux"
+            pyver: cp312
+          - os: ubuntu-latest
+            qemu: armv7l
+            musl: "musllinux"
+            pyver: cp313
+          - os: ubuntu-latest
+            qemu: armv7l
+            musl: ""
+            pyver: cp312
+          - os: ubuntu-latest
+            qemu: armv7l
+            musl: ""
+            pyver: cp313
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.newest_release_tag }}
+          fetch-depth: 0
+      # Used to host cibuildwheel
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up QEMU
+        if: ${{ matrix.qemu }}
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: all
+          # This should be temporary
+          # xref https://github.com/docker/setup-qemu-action/issues/188
+          # xref https://github.com/tonistiigi/binfmt/issues/215
+          image: tonistiigi/binfmt:qemu-v8.1.5
+        id: qemu
+      - name: Prepare emulation
+        if: ${{ matrix.qemu }}
+        run: |
+          if [[ -n "${{ matrix.qemu }}" ]]; then
+            # Build emulated architectures only if QEMU is set,
+            # use default "auto" otherwise
+            echo "CIBW_ARCHS_LINUX=${{ matrix.qemu }}" >> $GITHUB_ENV
+          fi
+      - name: Limit to a specific Python version on slow QEMU
+        if: ${{ matrix.pyver }}
+        run: |
+          if [[ -n "${{ matrix.pyver }}" ]]; then
+            echo "CIBW_BUILD=${{ matrix.pyver }}*" >> $GITHUB_ENV
+          fi
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.23.0
+        env:
+          CIBW_SKIP: cp36-* cp37-* cp38-* cp39-* cp310-* cp311-* pp* ${{ matrix.musl == 'musllinux' && '*manylinux*' || '*musllinux*' }}
+          REQUIRE_CYTHON: 1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}-${{ matrix.musl }}-${{ matrix.pyver }}-${{ matrix.qemu }}
+          path: ./wheelhouse/*.whl
+
+  upload_pypi:
+    needs: [build_wheels]
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          # unpacks default artifact into dist/
+          # if `name: artifact` is omitted, the action will create extra parent dir
+          path: dist
+          pattern: wheels-*
+          merge-multiple: true
+
+      - uses:
+          pypa/gh-action-pypi-publish@v1.12.4
+
+          # To test: repository_url: https://test.pypi.org/legacy/
