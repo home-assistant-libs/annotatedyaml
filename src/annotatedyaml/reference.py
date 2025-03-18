@@ -17,4 +17,5 @@ def _add_reference_to_node_class(
 ) -> None:
     """Add file reference information to a node class object."""
     obj.__config_file__ = loader.get_name
-    obj.__line__ = node.start_mark.line + 1
+    if (start_mark := node.start_mark) is not None:
+        obj.__line__ = start_mark.line + 1
