@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.4 (2025-03-19)
+
+### Bug fixes
+
+- Setting `__config_file__` and `__line__` (#23) ([`fd8e31a`](https://github.com/home-assistant-libs/annotatedyaml/commit/fd8e31af8c1dd01d18d5b8c33f0902ecd9c7361a))
+
 ## v0.4.3 (2025-03-18)
 
 ### Bug fixes
