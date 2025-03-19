@@ -8,7 +8,7 @@ import os
 from collections.abc import Callable, Iterator
 from io import StringIO, TextIOWrapper
 from pathlib import Path
-from typing import Any, TextIO, overload
+from typing import Any, TextIO
 
 import yaml
 
@@ -25,13 +25,11 @@ except ImportError:
 from propcache.api import cached_property
 
 from .const import SECRET_YAML
+from .constructors import _construct_seq, _handle_mapping_tag, _handle_scalar_tag
 from .exceptions import YAMLException, YamlTypeError
-from .objects import Input, NodeDictClass, NodeListClass, NodeStrClass
-from .reference import (
-    _add_reference_to_node_dict_class,
-    _add_reference_to_node_list_class,
-    _add_reference_to_node_str_class,
-)
+from .objects import Input, NodeDictClass
+from .reference import _add_reference_to_node_class
+from .reference_object import _add_reference
 
 # mypy: allow-untyped-calls, no-warn-return-any
 
@@ -230,42 +228,6 @@ def _parse_yaml(
     return yaml.load(content, Loader=lambda stream: loader(stream, secrets))  # type: ignore[arg-type]  # noqa: S506
 
 
-@overload
-def _add_reference(
-    obj: list | NodeListClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeListClass: ...
-
-
-@overload
-def _add_reference(
-    obj: str | NodeStrClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeStrClass: ...
-
-
-@overload
-def _add_reference(
-    obj: dict | NodeDictClass, loader: LoaderType, node: yaml.nodes.Node
-) -> NodeDictClass: ...
-
-
-def _add_reference(
-    obj: dict | list | str | NodeDictClass | NodeListClass | NodeStrClass,
-    loader: LoaderType,
-    node: yaml.nodes.Node,
-) -> NodeDictClass | NodeListClass | NodeStrClass:
-    """Add file reference information to an object."""
-    if isinstance(obj, list):
-        obj = NodeListClass(obj)
-        _add_reference_to_node_list_class(obj, loader, node)
-    elif isinstance(obj, str):
-        obj = NodeStrClass(obj)
-        _add_reference_to_node_str_class(obj, loader, node)
-    elif isinstance(obj, dict):
-        obj = NodeDictClass(obj)
-        _add_reference_to_node_dict_class(obj, loader, node)
-    return obj
-
-
 def _raise_if_no_value[NodeT: yaml.nodes.Node, _R](
     func: Callable[[LoaderType, NodeT], _R],
 ) -> Callable[[LoaderType, NodeT], _R]:
@@ -326,7 +288,7 @@ def _include_dir_named_yaml(loader: LoaderType, node: yaml.nodes.Node) -> NodeDi
             # as an empty dictionary
             loaded_yaml = NodeDictClass()
         mapping[filename] = loaded_yaml
-    _add_reference_to_node_dict_class(mapping, loader, node)
+    _add_reference_to_node_class(mapping, loader, node)
     return mapping
 
 
@@ -343,7 +305,7 @@ def _include_dir_merge_named_yaml(
         loaded_yaml = load_yaml(fname, loader.secrets)
         if isinstance(loaded_yaml, dict):
             mapping.update(loaded_yaml)
-    _add_reference_to_node_dict_class(mapping, loader, node)
+    _add_reference_to_node_class(mapping, loader, node)
     return mapping
 
 
@@ -375,78 +337,6 @@ def _include_dir_merge_list_yaml(
         if isinstance(loaded_yaml, list):
             merged_list.extend(loaded_yaml)
     return _add_reference(merged_list, loader, node)
-
-
-def _handle_mapping_tag(
-    loader: LoaderType, node: yaml.nodes.MappingNode
-) -> NodeDictClass:
-    """Load YAML mappings into an ordered dictionary to preserve key order."""
-    loader.flatten_mapping(node)
-    nodes = loader.construct_pairs(node)
-
-    # Check first if length of dict is equal to the length of the nodes
-    # This is a quick way to check if the keys are unique
-    try:
-        conv_dict = NodeDictClass(nodes)
-    except TypeError:
-        pass
-    else:
-        if len(conv_dict) == len(nodes):
-            _add_reference_to_node_dict_class(conv_dict, loader, node)
-            return conv_dict
-
-    seen: dict = {}
-    for (key, _), (child_node, _) in zip(nodes, node.value, strict=False):
-        line = child_node.start_mark.line
-
-        try:
-            hash(key)
-        except TypeError as exc:
-            fname = loader.get_stream_name
-            raise yaml.MarkedYAMLError(
-                context=f'invalid key: "{key}"',
-                context_mark=yaml.Mark(
-                    fname,
-                    0,
-                    line,
-                    -1,
-                    None,
-                    None,  # type: ignore[arg-type]
-                ),
-            ) from exc
-
-        if key in seen:
-            fname = loader.get_stream_name
-            _LOGGER.warning(
-                'YAML file %s contains duplicate key "%s". Check lines %d and %d',
-                fname,
-                key,
-                seen[key],
-                line,
-            )
-        seen[key] = line
-
-    mapping = NodeDictClass(nodes)
-    _add_reference_to_node_dict_class(mapping, loader, node)
-    return mapping
-
-
-def _construct_seq(loader: LoaderType, node: yaml.nodes.Node) -> JSON_TYPE:
-    """Add line number and file name to Load YAML sequence."""
-    (obj,) = loader.construct_yaml_seq(node)
-    return _add_reference(obj, loader, node)
-
-
-def _handle_scalar_tag(
-    loader: LoaderType, node: yaml.nodes.ScalarNode
-) -> str | int | float | None:
-    """Add line number and file name to Load YAML sequence."""
-    obj = node.value
-    if not isinstance(obj, str):
-        return obj
-    str_class = NodeStrClass(obj)
-    _add_reference_to_node_str_class(str_class, loader, node)
-    return str_class
 
 
 def _env_var_yaml(loader: LoaderType, node: yaml.nodes.Node) -> str:
