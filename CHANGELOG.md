@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.5 (2025-03-22)
+
+### Bug fixes
+
+- Use spdx license identifier (#25) ([`e766abe`](https://github.com/home-assistant-libs/annotatedyaml/commit/e766abe8e0ad92887d3c25c1f02e38194fbc3b7f))
+
 ## v0.4.4 (2025-03-19)
 
 ### Bug fixes
