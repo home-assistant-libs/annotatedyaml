@@ -155,7 +155,7 @@ script = "build_ext.py"
 pytest = ">=8,<9"
 pytest-cov = ">=6,<7"
 pytest-codspeed = ">=3.2.0"
-pytest-asyncio = "^1.0.0"
+pytest-asyncio = "^1.1.0"
 
 
 [tool.poetry.group.docs.dependencies]
