@@ -2,8 +2,9 @@
 
 import logging
 import os
-from distutils.command.build_ext import build_ext
 from typing import Any
+
+from distutils.command.build_ext import build_ext
 
 try:
     from setuptools import Extension
