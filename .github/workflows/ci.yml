@@ -55,8 +55,8 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.12"
           - "3.13"
+          - "3.14-dev"
         os:
           - ubuntu-latest
         extension:
@@ -173,15 +173,7 @@ jobs:
           - os: ubuntu-latest
             qemu: armv7l
             musl: "musllinux"
-            pyver: cp312
-          - os: ubuntu-latest
-            qemu: armv7l
-            musl: "musllinux"
             pyver: cp313
-          - os: ubuntu-latest
-            qemu: armv7l
-            musl: ""
-            pyver: cp312
           - os: ubuntu-latest
             qemu: armv7l
             musl: ""
@@ -223,7 +215,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.1.2
         env:
-          CIBW_SKIP: cp36-* cp37-* cp38-* cp39-* cp310-* cp311-* pp* ${{ matrix.musl == 'musllinux' && '*manylinux*' || '*musllinux*' }}
+          CIBW_SKIP: cp36-* cp37-* cp38-* cp39-* cp310-* cp311-* cp312-* pp* ${{ matrix.musl == 'musllinux' && '*manylinux*' || '*musllinux*' }}
           REQUIRE_CYTHON: 1
 
       - uses: actions/upload-artifact@v4

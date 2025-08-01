@@ -228,10 +228,10 @@ def _parse_yaml(
     return yaml.load(content, Loader=lambda stream: loader(stream, secrets))  # type: ignore[arg-type]  # noqa: S506
 
 
-def _raise_if_no_value[NodeT: yaml.nodes.Node, _R](
-    func: Callable[[LoaderType, NodeT], _R],
-) -> Callable[[LoaderType, NodeT], _R]:
-    def wrapper(loader: LoaderType, node: NodeT) -> _R:
+def _raise_if_no_value[NodeT: yaml.nodes.Node, R](
+    func: Callable[[LoaderType, NodeT], R],
+) -> Callable[[LoaderType, NodeT], R]:
+    def wrapper(loader: LoaderType, node: NodeT) -> R:
         if not node.value:
             raise YAMLException(f"{node.start_mark}: {node.tag} needs an argument.")
         return func(loader, node)
