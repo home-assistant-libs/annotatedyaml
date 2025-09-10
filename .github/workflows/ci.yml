@@ -14,7 +14,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
@@ -26,7 +26,7 @@ jobs:
     name: Lint Commit Messages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v6.2.1
@@ -35,7 +35,7 @@ jobs:
     name: Run benchmarks
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
@@ -64,7 +64,7 @@ jobs:
           - "use_cython"
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         id: setup-python
         with:
@@ -103,7 +103,7 @@ jobs:
       newest_release_tag: ${{ steps.release.outputs.tag }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           ref: ${{ github.sha }}
@@ -129,7 +129,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Attest build provenance
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v3
         if: steps.release.outputs.released == 'true'
         with:
           subject-path: "dist/*"
@@ -179,7 +179,7 @@ jobs:
             musl: ""
             pyver: cp313
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ needs.release.outputs.newest_release_tag }}
           fetch-depth: 0
@@ -213,7 +213,7 @@ jobs:
             echo "CIBW_BUILD=${{ matrix.pyver }}*" >> $GITHUB_ENV
           fi
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.1.2
+        uses: pypa/cibuildwheel@v3.1.4
         env:
           CIBW_SKIP: cp36-* cp37-* cp38-* cp39-* cp310-* cp311-* cp312-* pp* ${{ matrix.musl == 'musllinux' && '*manylinux*' || '*musllinux*' }}
           REQUIRE_CYTHON: 1
@@ -231,7 +231,7 @@ jobs:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
 
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           # unpacks default artifact into dist/
           # if `name: artifact` is omitted, the action will create extra parent dir
