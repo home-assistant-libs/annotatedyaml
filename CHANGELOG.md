@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.1 (2025-10-04)
+
+### Bug fixes
+
+- Add wheels for python 3.14 ([`abe319d`](https://github.com/home-assistant-libs/annotatedyaml/commit/abe319d1ec80b2b5ccf207f663dd01e1bf877dce))
+
 ## v1.0.0 (2025-08-01)
 
 ## v0.4.5 (2025-03-22)
