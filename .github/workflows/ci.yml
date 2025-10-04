@@ -71,7 +71,6 @@ jobs:
         id: setup-python
         with:
           python-version: ${{ matrix.python-version }}
-          allow-prereleases: true
       - uses: snok/install-poetry@v1.4.1
       - name: Install Dependencies
         run: |
