@@ -15,7 +15,7 @@ from sphinx.ext import apidoc
 project = "annotatedyaml"
 copyright = "2025, Home Assistant Devs"
 author = "Home Assistant Devs"
-release = "1.0.1"
+release = "1.0.2"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

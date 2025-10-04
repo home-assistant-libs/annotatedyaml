@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.2 (2025-10-04)
+
+### Bug fixes
+
+- Add missing 3.14 armv7l wheels ([`d6f1828`](https://github.com/home-assistant-libs/annotatedyaml/commit/d6f182835ce2620032f4d695262056e95fa04a65))
+
 ## v1.0.1 (2025-10-04)
 
 ### Bug fixes
