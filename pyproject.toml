@@ -152,7 +152,7 @@ generate-setup-file = true
 script = "build_ext.py"
 
 [tool.poetry.group.dev.dependencies]
-pytest = ">=8,<9"
+pytest = ">=8,<10"
 pytest-cov = ">=6,<8"
 pytest-codspeed = ">=3.2.0"
 pytest-asyncio = "^1.2.0"
