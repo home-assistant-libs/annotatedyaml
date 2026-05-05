@@ -599,3 +599,42 @@ def test_getting_annotation(mock_yaml: None) -> None:
     """Test we can fetch annotations in pure python."""
     data = yaml_loader.load_yaml(YAML_CONFIG_FILE)
     assert _get_annotation(data) == ("test.yaml", 1)
+
+
+def test_find_files_without_symlinks(tmp_path: pathlib.Path) -> None:
+    """Test that _find_files correctly finds regular YAML files."""
+    test_dir = tmp_path / "test"
+    test_dir.mkdir()
+
+    # Create YAML files
+    (test_dir / "file1.yaml").write_text("content1")
+    (test_dir / "file2.yaml").write_text("content2")
+    (test_dir / "not_yaml.txt").write_text("not yaml")
+
+    # Call _find_files
+    files = list(yaml_loader._find_files(str(test_dir), "*.yaml"))
+
+    # Assert that only YAML files are found
+    expected = [str(test_dir / "file1.yaml"), str(test_dir / "file2.yaml")]
+    assert sorted(files) == sorted(expected)
+
+
+def test_find_files_with_symlinks(tmp_path: pathlib.Path) -> None:
+    """Test that _find_files correctly handles symlinked files."""
+    test_dir = tmp_path / "test"
+    test_dir.mkdir()
+
+    # Create a YAML file
+    file1 = test_dir / "file1.yaml"
+    file1.write_text("content")
+
+    # Create a symlink to the file
+    symlink_file = test_dir / "symlink.yaml"
+    os.symlink(str(file1), str(symlink_file))
+
+    # Call _find_files
+    files = list(yaml_loader._find_files(str(test_dir), "*.yaml"))
+
+    # Assert that both the original file and the symlink are found
+    expected = [str(file1), str(symlink_file)]
+    assert sorted(files) == sorted(expected)
