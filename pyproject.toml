@@ -160,6 +160,6 @@ pytest-asyncio = "^1.2.0"
 
 [tool.poetry.group.docs.dependencies]
 furo = ">=2023.5.20"
-myst-parser = ">=0.16"
+myst-parser = ">=5.1.0"
 sphinx = ">=4"
 sphinx-autobuild = ">=2024,<2026"
