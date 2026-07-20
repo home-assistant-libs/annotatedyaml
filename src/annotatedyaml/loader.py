@@ -265,7 +265,7 @@ def _is_file_valid(name: str) -> bool:
 
 def _find_files(directory: str, pattern: str) -> Iterator[str]:
     """Recursively load files in a directory."""
-    for root, dirs, files in os.walk(directory, topdown=True):
+    for root, dirs, files in os.walk(directory, topdown=True, followlinks=True):
         dirs[:] = [d for d in dirs if _is_file_valid(d)]
         for basename in sorted(files):
             if _is_file_valid(basename) and fnmatch.fnmatch(basename, pattern):
