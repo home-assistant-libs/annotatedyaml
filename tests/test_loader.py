@@ -622,7 +622,7 @@ def test_loaded_paths_records_include_graph(tmp_path: pathlib.Path) -> None:
     _write(scalar, "true\n")
 
     loaded_paths: set[str] = set()
-    doc = yaml_loader.load_yaml(root, None, loaded_paths)
+    doc = yaml_loader.load_yaml(root, None, loaded_paths=loaded_paths)
 
     assert doc == {"one": {"two": {"value": "deep"}}, "flag": True}
     assert loaded_paths == {str(root), str(nested), str(deeper), str(scalar)}
@@ -640,7 +640,7 @@ def test_loaded_paths_records_include_dirs(tmp_path: pathlib.Path) -> None:
     _write(nested_dir / "two.yaml", "title: Two\n")
 
     loaded_paths: set[str] = set()
-    yaml_loader.load_yaml(root, None, loaded_paths)
+    yaml_loader.load_yaml(root, None, loaded_paths=loaded_paths)
 
     # The directories matter as well as their files: adding a file changes only
     # the directory's mtime.
@@ -663,7 +663,7 @@ def test_loaded_paths_records_missing_dir_and_normalises(
     _write(tmp_path / "keep.yaml", "value: 1\n")
 
     loaded_paths: set[str] = set()
-    yaml_loader.load_yaml(root, None, loaded_paths)
+    yaml_loader.load_yaml(root, None, loaded_paths=loaded_paths)
 
     assert str(tmp_path / "absent") in loaded_paths
     assert str(tmp_path / "keep.yaml") in loaded_paths
