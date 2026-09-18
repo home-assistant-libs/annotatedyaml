@@ -271,7 +271,9 @@ def _parse_yaml(
     """Load a YAML file."""
     return yaml.load(
         content,
-        Loader=lambda stream: loader(stream, secrets, loaded_paths),  # noqa: S506
+        Loader=lambda stream: loader(  # type: ignore[arg-type]  # noqa: S506
+            stream, secrets, loaded_paths
+        ),
     )
 
 
