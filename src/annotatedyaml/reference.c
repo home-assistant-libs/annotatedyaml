@@ -2666,14 +2666,14 @@ return 0;
 /* #### Code section: module_code ### */
 
 /* "annotatedyaml/reference.py":13
- * 
- * 
+ *
+ *
  * def _add_reference_to_node_class(             # <<<<<<<<<<<<<<
  *     obj: NodeDictClass | NodeListClass | NodeStrClass,
  *     loader: LoaderType,
 */
 
-static PyObject *__pyx_pw_13annotatedyaml_9reference_1_add_reference_to_node_class(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_13annotatedyaml_9reference_1_add_reference_to_node_class(PyObject *__pyx_self,
 #if CYTHON_VECTORCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -2741,8 +2741,8 @@ static PyObject *__pyx_f_13annotatedyaml_9reference__add_reference_to_node_class
   }
 
   /* "annotatedyaml/reference.py":13
- * 
- * 
+ *
+ *
  * def _add_reference_to_node_class(             # <<<<<<<<<<<<<<
  *     obj: NodeDictClass | NodeListClass | NodeStrClass,
  *     loader: LoaderType,
@@ -2764,7 +2764,7 @@ static PyObject *__pyx_f_13annotatedyaml_9reference__add_reference_to_node_class
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13annotatedyaml_9reference_1_add_reference_to_node_class(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_13annotatedyaml_9reference_1_add_reference_to_node_class(PyObject *__pyx_self,
 #if CYTHON_VECTORCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -2773,7 +2773,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 PyDoc_STRVAR(__pyx_doc_13annotatedyaml_9reference__add_reference_to_node_class, "Add file reference information to a node class object.");
 static PyMethodDef __pyx_mdef_13annotatedyaml_9reference_1_add_reference_to_node_class = {"_add_reference_to_node_class", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_13annotatedyaml_9reference_1_add_reference_to_node_class, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_13annotatedyaml_9reference__add_reference_to_node_class};
-static PyObject *__pyx_pw_13annotatedyaml_9reference_1_add_reference_to_node_class(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_13annotatedyaml_9reference_1_add_reference_to_node_class(PyObject *__pyx_self,
 #if CYTHON_VECTORCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3236,7 +3236,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_reference(PyObject *__pyx_pyinit_m
         Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  
+
 __Pyx_RefNannySetupContext("PyInit_reference", 0);
   __Pyx_init_runtime_version();
   if (__Pyx_check_binary_version(__PYX_LIMITED_VERSION_HEX, __Pyx_get_runtime_version(), CYTHON_COMPILING_IN_LIMITED_API) < (0)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -3275,9 +3275,9 @@ __Pyx_RefNannySetupContext("PyInit_reference", 0);
 
   /* "annotatedyaml/reference.py":3
  * from __future__ import annotations
- * 
+ *
  * from typing import TYPE_CHECKING             # <<<<<<<<<<<<<<
- * 
+ *
  * import yaml
 */
   {
@@ -3299,9 +3299,9 @@ __Pyx_RefNannySetupContext("PyInit_reference", 0);
 
   /* "annotatedyaml/reference.py":5
  * from typing import TYPE_CHECKING
- * 
+ *
  * import yaml             # <<<<<<<<<<<<<<
- * 
+ *
  * from .objects import NodeDictClass, NodeListClass, NodeStrClass
 */
   __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_yaml, 0, 0, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
@@ -3312,9 +3312,9 @@ __Pyx_RefNannySetupContext("PyInit_reference", 0);
 
   /* "annotatedyaml/reference.py":7
  * import yaml
- * 
+ *
  * from .objects import NodeDictClass, NodeListClass, NodeStrClass             # <<<<<<<<<<<<<<
- * 
+ *
  * if TYPE_CHECKING:
 */
   {
@@ -3336,10 +3336,10 @@ __Pyx_RefNannySetupContext("PyInit_reference", 0);
 
   /* "annotatedyaml/reference.py":9
  * from .objects import NodeDictClass, NodeListClass, NodeStrClass
- * 
+ *
  * if TYPE_CHECKING:             # <<<<<<<<<<<<<<
  *     from .loader import LoaderType
- * 
+ *
 */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_TYPE_CHECKING); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -3349,11 +3349,11 @@ __Pyx_RefNannySetupContext("PyInit_reference", 0);
 
 
     /* "annotatedyaml/reference.py":10
- * 
+ *
  * if TYPE_CHECKING:
  *     from .loader import LoaderType             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
 */
     {
       PyObject* const __pyx_imported_names[] = {__pyx_mstate_global->__pyx_n_u_LoaderType};
@@ -3374,16 +3374,16 @@ __Pyx_RefNannySetupContext("PyInit_reference", 0);
 
     /* "annotatedyaml/reference.py":9
  * from .objects import NodeDictClass, NodeListClass, NodeStrClass
- * 
+ *
  * if TYPE_CHECKING:             # <<<<<<<<<<<<<<
  *     from .loader import LoaderType
- * 
+ *
 */
   }
 
   /* "annotatedyaml/reference.py":13
- * 
- * 
+ *
+ *
  * def _add_reference_to_node_class(             # <<<<<<<<<<<<<<
  *     obj: NodeDictClass | NodeListClass | NodeStrClass,
  *     loader: LoaderType,
@@ -3405,7 +3405,7 @@ __Pyx_RefNannySetupContext("PyInit_reference", 0);
 
   /* "annotatedyaml/reference.py":1
  * from __future__ import annotations             # <<<<<<<<<<<<<<
- * 
+ *
  * from typing import TYPE_CHECKING
 */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -3633,12 +3633,12 @@ static int __Pyx_InitGlobals(void) {
   int __pyx_clineno = 0;
   /* PythonCompatibility.init */
   if (likely(__Pyx_init_co_variables() == 0 && __Pyx_init_tpflags_variables() == 0)); else
-  
+
   if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
 
   /* CommonTypesMetaclass.init */
   if (likely(__pyx_CommonTypesMetaclass_init(__pyx_m) == 0)); else
-  
+
   if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
 
   /* CachedMethodType.init */
@@ -3652,7 +3652,7 @@ static int __Pyx_InitGlobals(void) {
       }
   } // error handling follows
   #endif
-  
+
   if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
 
   return 0;
@@ -3667,7 +3667,7 @@ static int __Pyx_InitAfterSharedUtility(void) {
   int __pyx_clineno = 0;
   /* CythonFunctionPerModule.init */
   if (likely(__pyx_CyFunction_init(__pyx_m) == 0)); else
-  
+
   if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
 
   return 0;
@@ -3794,7 +3794,7 @@ static PyObject* __Pyx_Unpacked___Pyx_PyLong_AddObjC(PyObject *op1, PyObject *op
             llx = lla + llb;
             return PyLong_FromLongLong(llx);
         }
-    
+
 }
 #endif
 static PyObject* __Pyx_Float___Pyx_PyLong_AddObjC(PyObject *float_val, long intval, int zerodivision_check) {
@@ -3802,7 +3802,7 @@ static PyObject* __Pyx_Float___Pyx_PyLong_AddObjC(PyObject *float_val, long intv
     const long b = intval;
     double a = __Pyx_PyFloat_AS_DOUBLE(float_val);
         double result;
-        
+
         result = ((double)a) + (double)b;
         return PyFloat_FromDouble(result);
 }
@@ -3887,7 +3887,7 @@ static CYTHON_INLINE int __Pyx_PyObject_CompareBoolEq_str_str(PyObject *op1, PyO
     if (unlikely(op2 == Py_None)) {
         if (op1 == Py_None) goto __pyx_return_true; else goto __pyx_return_false;
     }
-    
+
     if (likely(op1 != Py_None)) {
         if (op1 == op2) goto __pyx_return_true;
         if (likely(op2 != Py_None)) {
@@ -3895,7 +3895,7 @@ static CYTHON_INLINE int __Pyx_PyObject_CompareBoolEq_str_str(PyObject *op1, PyO
         }
         goto __pyx_richcmp;
     }
-    
+
     if ((0)) goto __pyx_richcmp;
     if ((0)) goto __pyx_return_true;
     if ((0)) goto __pyx_return_false;

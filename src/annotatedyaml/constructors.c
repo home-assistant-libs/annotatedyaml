@@ -2851,15 +2851,15 @@ return 0;
 /* #### Code section: module_code ### */
 
 /* "annotatedyaml/constructors.py":20
- * 
- * 
+ *
+ *
  * def _handle_mapping_tag(             # <<<<<<<<<<<<<<
  *     loader: LoaderType, node: yaml.nodes.MappingNode
  * ) -> NodeDictClass:
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13annotatedyaml_12constructors_1_handle_mapping_tag(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_13annotatedyaml_12constructors_1_handle_mapping_tag(PyObject *__pyx_self,
 #if CYTHON_VECTORCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -2868,7 +2868,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 PyDoc_STRVAR(__pyx_doc_13annotatedyaml_12constructors__handle_mapping_tag, "Load YAML mappings into an ordered dictionary to preserve key order.");
 static PyMethodDef __pyx_mdef_13annotatedyaml_12constructors_1_handle_mapping_tag = {"_handle_mapping_tag", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_13annotatedyaml_12constructors_1_handle_mapping_tag, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_13annotatedyaml_12constructors__handle_mapping_tag};
-static PyObject *__pyx_pw_13annotatedyaml_12constructors_1_handle_mapping_tag(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_13annotatedyaml_12constructors_1_handle_mapping_tag(PyObject *__pyx_self,
 #if CYTHON_VECTORCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3007,7 +3007,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
  *     """Load YAML mappings into an ordered dictionary to preserve key order."""
  *     loader.flatten_mapping(node)             # <<<<<<<<<<<<<<
  *     nodes = loader.construct_pairs(node)
- * 
+ *
 */
   __pyx_t_2 = __pyx_v_loader;
   __Pyx_INCREF(__pyx_t_2);
@@ -3025,7 +3025,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
  *     """Load YAML mappings into an ordered dictionary to preserve key order."""
  *     loader.flatten_mapping(node)
  *     nodes = loader.construct_pairs(node)             # <<<<<<<<<<<<<<
- * 
+ *
  *     # Check first if length of dict is equal to the length of the nodes
 */
   __pyx_t_2 = __pyx_v_loader;
@@ -3066,7 +3066,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
 */
       __pyx_t_2 = NULL;
       __Pyx_INCREF(__pyx_v_13annotatedyaml_12constructors_NodeDictClass);
-      __pyx_t_7 = __pyx_v_13annotatedyaml_12constructors_NodeDictClass; 
+      __pyx_t_7 = __pyx_v_13annotatedyaml_12constructors_NodeDictClass;
       __pyx_t_3 = 1;
       #if CYTHON_UNPACK_METHODS
       if (unlikely(PyMethod_Check(__pyx_t_7))) {
@@ -3121,7 +3121,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
  *         if len(conv_dict) == len(nodes):
  *             _add_reference_to_node_class(conv_dict, loader, node)             # <<<<<<<<<<<<<<
  *             return conv_dict
- * 
+ *
 */
         __pyx_t_1 = __pyx_f_13annotatedyaml_9reference__add_reference_to_node_class(__pyx_v_conv_dict, __pyx_v_loader, __pyx_v_node, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L5_except_error)
         __Pyx_GOTREF(__pyx_t_1);
@@ -3131,7 +3131,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
  *         if len(conv_dict) == len(nodes):
  *             _add_reference_to_node_class(conv_dict, loader, node)
  *             return conv_dict             # <<<<<<<<<<<<<<
- * 
+ *
  *     seen: dict = {}
 */
         {
@@ -3206,7 +3206,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
 
   /* "annotatedyaml/constructors.py":38
  *             return conv_dict
- * 
+ *
  *     seen: dict = {}             # <<<<<<<<<<<<<<
  *     for (key, _), (child_node, _) in zip(nodes, node.value, strict=False):
  *         line = child_node.start_mark.line
@@ -3217,11 +3217,11 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
   __pyx_t_1 = 0;
 
   /* "annotatedyaml/constructors.py":39
- * 
+ *
  *     seen: dict = {}
  *     for (key, _), (child_node, _) in zip(nodes, node.value, strict=False):             # <<<<<<<<<<<<<<
  *         line = child_node.start_mark.line
- * 
+ *
 */
   __pyx_t_7 = NULL;
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_node, __pyx_mstate_global->__pyx_n_u_value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 39, __pyx_L1_error)
@@ -3461,7 +3461,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
  *     seen: dict = {}
  *     for (key, _), (child_node, _) in zip(nodes, node.value, strict=False):
  *         line = child_node.start_mark.line             # <<<<<<<<<<<<<<
- * 
+ *
  *         try:
 */
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_child_node, __pyx_mstate_global->__pyx_n_u_start_mark); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
@@ -3474,7 +3474,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
 
     /* "annotatedyaml/constructors.py":42
  *         line = child_node.start_mark.line
- * 
+ *
  *         try:             # <<<<<<<<<<<<<<
  *             hash(key)
  *         except TypeError as exc:
@@ -3489,7 +3489,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
       /*try:*/ {
 
         /* "annotatedyaml/constructors.py":43
- * 
+ *
  *         try:
  *             hash(key)             # <<<<<<<<<<<<<<
  *         except TypeError as exc:
@@ -3500,7 +3500,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
 
         /* "annotatedyaml/constructors.py":42
  *         line = child_node.start_mark.line
- * 
+ *
  *         try:             # <<<<<<<<<<<<<<
  *             hash(key)
  *         except TypeError as exc:
@@ -3668,7 +3668,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
  *                     None,  # type: ignore[arg-type]
  *                 ),
  *             ) from exc             # <<<<<<<<<<<<<<
- * 
+ *
  *         if key in seen:
 */
           __Pyx_Raise(__pyx_t_14, 0, 0, __pyx_v_exc);
@@ -3727,7 +3727,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
 
       /* "annotatedyaml/constructors.py":42
  *         line = child_node.start_mark.line
- * 
+ *
  *         try:             # <<<<<<<<<<<<<<
  *             hash(key)
  *         except TypeError as exc:
@@ -3743,7 +3743,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
 
     /* "annotatedyaml/constructors.py":58
  *             ) from exc
- * 
+ *
  *         if key in seen:             # <<<<<<<<<<<<<<
  *             fname = loader.get_stream_name
  *             _LOGGER.warning(
@@ -3753,7 +3753,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
 
 
       /* "annotatedyaml/constructors.py":59
- * 
+ *
  *         if key in seen:
  *             fname = loader.get_stream_name             # <<<<<<<<<<<<<<
  *             _LOGGER.warning(
@@ -3820,7 +3820,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
 
       /* "annotatedyaml/constructors.py":58
  *             ) from exc
- * 
+ *
  *         if key in seen:             # <<<<<<<<<<<<<<
  *             fname = loader.get_stream_name
  *             _LOGGER.warning(
@@ -3831,31 +3831,31 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
  *                 line,
  *             )
  *         seen[key] = line             # <<<<<<<<<<<<<<
- * 
+ *
  *     mapping = NodeDictClass(nodes)
 */
     if (unlikely((PyDict_SetItem(__pyx_v_seen, __pyx_v_key, __pyx_v_line) < 0))) __PYX_ERR(0, 67, __pyx_L1_error)
 
     /* "annotatedyaml/constructors.py":39
- * 
+ *
  *     seen: dict = {}
  *     for (key, _), (child_node, _) in zip(nodes, node.value, strict=False):             # <<<<<<<<<<<<<<
  *         line = child_node.start_mark.line
- * 
+ *
 */
   }
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
   /* "annotatedyaml/constructors.py":69
  *         seen[key] = line
- * 
+ *
  *     mapping = NodeDictClass(nodes)             # <<<<<<<<<<<<<<
  *     _add_reference_to_node_class(mapping, loader, node)
  *     return mapping
 */
   __pyx_t_2 = NULL;
   __Pyx_INCREF(__pyx_v_13annotatedyaml_12constructors_NodeDictClass);
-  __pyx_t_14 = __pyx_v_13annotatedyaml_12constructors_NodeDictClass; 
+  __pyx_t_14 = __pyx_v_13annotatedyaml_12constructors_NodeDictClass;
   __pyx_t_3 = 1;
   #if CYTHON_UNPACK_METHODS
   if (unlikely(PyMethod_Check(__pyx_t_14))) {
@@ -3880,11 +3880,11 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
   __pyx_t_12 = 0;
 
   /* "annotatedyaml/constructors.py":70
- * 
+ *
  *     mapping = NodeDictClass(nodes)
  *     _add_reference_to_node_class(mapping, loader, node)             # <<<<<<<<<<<<<<
  *     return mapping
- * 
+ *
 */
   __pyx_t_12 = __pyx_f_13annotatedyaml_9reference__add_reference_to_node_class(__pyx_v_mapping, __pyx_v_loader, __pyx_v_node, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
@@ -3894,8 +3894,8 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
  *     mapping = NodeDictClass(nodes)
  *     _add_reference_to_node_class(mapping, loader, node)
  *     return mapping             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
 */
   {
     PyObject *__pyx_temp;
@@ -3909,8 +3909,8 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
   goto __pyx_L0;
 
   /* "annotatedyaml/constructors.py":20
- * 
- * 
+ *
+ *
  * def _handle_mapping_tag(             # <<<<<<<<<<<<<<
  *     loader: LoaderType, node: yaml.nodes.MappingNode
  * ) -> NodeDictClass:
@@ -3949,15 +3949,15 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors__handle_mapping_tag(CYT
 }
 
 /* "annotatedyaml/constructors.py":74
- * 
- * 
+ *
+ *
  * def _construct_seq(loader: LoaderType, node: yaml.nodes.Node) -> JSON_TYPE:             # <<<<<<<<<<<<<<
  *     """Add line number and file name to Load YAML sequence."""
  *     (obj,) = loader.construct_yaml_seq(node)
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13annotatedyaml_12constructors_3_construct_seq(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_13annotatedyaml_12constructors_3_construct_seq(PyObject *__pyx_self,
 #if CYTHON_VECTORCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -3966,7 +3966,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 PyDoc_STRVAR(__pyx_doc_13annotatedyaml_12constructors_2_construct_seq, "Add line number and file name to Load YAML sequence.");
 static PyMethodDef __pyx_mdef_13annotatedyaml_12constructors_3_construct_seq = {"_construct_seq", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_13annotatedyaml_12constructors_3_construct_seq, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_13annotatedyaml_12constructors_2_construct_seq};
-static PyObject *__pyx_pw_13annotatedyaml_12constructors_3_construct_seq(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_13annotatedyaml_12constructors_3_construct_seq(PyObject *__pyx_self,
 #if CYTHON_VECTORCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4069,7 +4069,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors_2_construct_seq(CYTHON_
  *     """Add line number and file name to Load YAML sequence."""
  *     (obj,) = loader.construct_yaml_seq(node)             # <<<<<<<<<<<<<<
  *     return _add_reference(obj, loader, node)
- * 
+ *
 */
   __pyx_t_2 = __pyx_v_loader;
   __Pyx_INCREF(__pyx_t_2);
@@ -4129,8 +4129,8 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors_2_construct_seq(CYTHON_
  *     """Add line number and file name to Load YAML sequence."""
  *     (obj,) = loader.construct_yaml_seq(node)
  *     return _add_reference(obj, loader, node)             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
 */
   __pyx_t_2 = NULL;
   __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_add_reference); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
@@ -4167,8 +4167,8 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors_2_construct_seq(CYTHON_
   goto __pyx_L0;
 
   /* "annotatedyaml/constructors.py":74
- * 
- * 
+ *
+ *
  * def _construct_seq(loader: LoaderType, node: yaml.nodes.Node) -> JSON_TYPE:             # <<<<<<<<<<<<<<
  *     """Add line number and file name to Load YAML sequence."""
  *     (obj,) = loader.construct_yaml_seq(node)
@@ -4189,15 +4189,15 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors_2_construct_seq(CYTHON_
 }
 
 /* "annotatedyaml/constructors.py":80
- * 
- * 
+ *
+ *
  * def _handle_scalar_tag(             # <<<<<<<<<<<<<<
  *     loader: LoaderType, node: yaml.nodes.ScalarNode
  * ) -> str | int | float | None:
 */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13annotatedyaml_12constructors_5_handle_scalar_tag(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_13annotatedyaml_12constructors_5_handle_scalar_tag(PyObject *__pyx_self,
 #if CYTHON_VECTORCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4206,7 +4206,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 PyDoc_STRVAR(__pyx_doc_13annotatedyaml_12constructors_4_handle_scalar_tag, "Add line number and file name to Load YAML sequence.");
 static PyMethodDef __pyx_mdef_13annotatedyaml_12constructors_5_handle_scalar_tag = {"_handle_scalar_tag", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_13annotatedyaml_12constructors_5_handle_scalar_tag, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_13annotatedyaml_12constructors_4_handle_scalar_tag};
-static PyObject *__pyx_pw_13annotatedyaml_12constructors_5_handle_scalar_tag(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_13annotatedyaml_12constructors_5_handle_scalar_tag(PyObject *__pyx_self,
 #if CYTHON_VECTORCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4325,7 +4325,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors_4_handle_scalar_tag(CYT
  *         return obj
  *     str_class = NodeStrClass(obj)
 */
-  __pyx_t_2 = PyUnicode_Check(__pyx_v_obj); 
+  __pyx_t_2 = PyUnicode_Check(__pyx_v_obj);
   __pyx_t_3 = (!__pyx_t_2);
 
 
@@ -4368,7 +4368,7 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors_4_handle_scalar_tag(CYT
 */
   __pyx_t_4 = NULL;
   __Pyx_INCREF(__pyx_v_13annotatedyaml_12constructors_NodeStrClass);
-  __pyx_t_5 = __pyx_v_13annotatedyaml_12constructors_NodeStrClass; 
+  __pyx_t_5 = __pyx_v_13annotatedyaml_12constructors_NodeStrClass;
   __pyx_t_6 = 1;
   #if CYTHON_UNPACK_METHODS
   if (unlikely(PyMethod_Check(__pyx_t_5))) {
@@ -4419,8 +4419,8 @@ static PyObject *__pyx_pf_13annotatedyaml_12constructors_4_handle_scalar_tag(CYT
   goto __pyx_L0;
 
   /* "annotatedyaml/constructors.py":80
- * 
- * 
+ *
+ *
  * def _handle_scalar_tag(             # <<<<<<<<<<<<<<
  *     loader: LoaderType, node: yaml.nodes.ScalarNode
  * ) -> str | int | float | None:
@@ -4813,7 +4813,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_constructors(PyObject *__pyx_pyini
         Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  
+
 __Pyx_RefNannySetupContext("PyInit_constructors", 0);
   __Pyx_init_runtime_version();
   if (__Pyx_check_binary_version(__PYX_LIMITED_VERSION_HEX, __Pyx_get_runtime_version(), CYTHON_COMPILING_IN_LIMITED_API) < (0)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -4852,10 +4852,10 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
 
   /* "annotatedyaml/constructors.py":5
  * from __future__ import annotations
- * 
+ *
  * import logging             # <<<<<<<<<<<<<<
  * from typing import TYPE_CHECKING
- * 
+ *
 */
   __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_logging, 0, 0, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
   __pyx_t_2 = __pyx_t_1;
@@ -4864,10 +4864,10 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "annotatedyaml/constructors.py":6
- * 
+ *
  * import logging
  * from typing import TYPE_CHECKING             # <<<<<<<<<<<<<<
- * 
+ *
  * import yaml
 */
   {
@@ -4889,9 +4889,9 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
 
   /* "annotatedyaml/constructors.py":8
  * from typing import TYPE_CHECKING
- * 
+ *
  * import yaml             # <<<<<<<<<<<<<<
- * 
+ *
  * from .objects import NodeDictClass, NodeStrClass
 */
   __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_yaml, 0, 0, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
@@ -4902,7 +4902,7 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
 
   /* "annotatedyaml/constructors.py":10
  * import yaml
- * 
+ *
  * from .objects import NodeDictClass, NodeStrClass             # <<<<<<<<<<<<<<
  * from .reference import _add_reference_to_node_class
  * from .reference_object import _add_reference
@@ -4939,11 +4939,11 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "annotatedyaml/constructors.py":11
- * 
+ *
  * from .objects import NodeDictClass, NodeStrClass
  * from .reference import _add_reference_to_node_class             # <<<<<<<<<<<<<<
  * from .reference_object import _add_reference
- * 
+ *
 */
   {
     PyObject* const __pyx_imported_names[] = {__pyx_mstate_global->__pyx_n_u_add_reference_to_node_class};
@@ -4966,7 +4966,7 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
  * from .objects import NodeDictClass, NodeStrClass
  * from .reference import _add_reference_to_node_class
  * from .reference_object import _add_reference             # <<<<<<<<<<<<<<
- * 
+ *
  * if TYPE_CHECKING:
 */
   {
@@ -4988,10 +4988,10 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
 
   /* "annotatedyaml/constructors.py":14
  * from .reference_object import _add_reference
- * 
+ *
  * if TYPE_CHECKING:             # <<<<<<<<<<<<<<
  *     from .loader import JSON_TYPE, LoaderType
- * 
+ *
 */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_mstate_global->__pyx_n_u_TYPE_CHECKING); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -5001,10 +5001,10 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
 
 
     /* "annotatedyaml/constructors.py":15
- * 
+ *
  * if TYPE_CHECKING:
  *     from .loader import JSON_TYPE, LoaderType             # <<<<<<<<<<<<<<
- * 
+ *
  * _LOGGER = logging.getLogger(__name__)
 */
     {
@@ -5026,19 +5026,19 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
 
     /* "annotatedyaml/constructors.py":14
  * from .reference_object import _add_reference
- * 
+ *
  * if TYPE_CHECKING:             # <<<<<<<<<<<<<<
  *     from .loader import JSON_TYPE, LoaderType
- * 
+ *
 */
   }
 
   /* "annotatedyaml/constructors.py":17
  *     from .loader import JSON_TYPE, LoaderType
- * 
+ *
  * _LOGGER = logging.getLogger(__name__)             # <<<<<<<<<<<<<<
- * 
- * 
+ *
+ *
 */
   __pyx_t_4 = NULL;
   __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_mstate_global->__pyx_n_u_logging); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 17, __pyx_L1_error)
@@ -5062,8 +5062,8 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "annotatedyaml/constructors.py":20
- * 
- * 
+ *
+ *
  * def _handle_mapping_tag(             # <<<<<<<<<<<<<<
  *     loader: LoaderType, node: yaml.nodes.MappingNode
  * ) -> NodeDictClass:
@@ -5084,8 +5084,8 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
   /* "annotatedyaml/constructors.py":74
- * 
- * 
+ *
+ *
  * def _construct_seq(loader: LoaderType, node: yaml.nodes.Node) -> JSON_TYPE:             # <<<<<<<<<<<<<<
  *     """Add line number and file name to Load YAML sequence."""
  *     (obj,) = loader.construct_yaml_seq(node)
@@ -5106,8 +5106,8 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "annotatedyaml/constructors.py":80
- * 
- * 
+ *
+ *
  * def _handle_scalar_tag(             # <<<<<<<<<<<<<<
  *     loader: LoaderType, node: yaml.nodes.ScalarNode
  * ) -> str | int | float | None:
@@ -5129,7 +5129,7 @@ __Pyx_RefNannySetupContext("PyInit_constructors", 0);
 
   /* "annotatedyaml/constructors.py":1
  * """Constructors for the custom loader."""             # <<<<<<<<<<<<<<
- * 
+ *
  * from __future__ import annotations
 */
   __pyx_t_7 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -5203,11 +5203,11 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
   /* "annotatedyaml/constructors.py":39
- * 
+ *
  *     seen: dict = {}
  *     for (key, _), (child_node, _) in zip(nodes, node.value, strict=False):             # <<<<<<<<<<<<<<
  *         line = child_node.start_mark.line
- * 
+ *
 */
   {
     PyObject* __pyx_temp[1] = {__pyx_mstate_global->__pyx_n_u_strict};
@@ -5441,7 +5441,7 @@ static int __Pyx_InitGlobals(void) {
   int __pyx_clineno = 0;
   /* PythonCompatibility.init */
   if (likely(__Pyx_init_co_variables() == 0 && __Pyx_init_tpflags_variables() == 0)); else
-  
+
   if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
 
   /* PyFrozenDict.init */
@@ -5463,12 +5463,12 @@ static int __Pyx_InitGlobals(void) {
       }
   } // error handling follows
   #endif
-  
+
   if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
 
   /* CommonTypesMetaclass.init */
   if (likely(__pyx_CommonTypesMetaclass_init(__pyx_m) == 0)); else
-  
+
   if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
 
   /* CachedMethodType.init */
@@ -5482,7 +5482,7 @@ static int __Pyx_InitGlobals(void) {
       }
   } // error handling follows
   #endif
-  
+
   if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
 
   return 0;
@@ -5497,7 +5497,7 @@ static int __Pyx_InitAfterSharedUtility(void) {
   int __pyx_clineno = 0;
   /* CythonFunctionPerModule.init */
   if (likely(__pyx_CyFunction_init(__pyx_m) == 0)); else
-  
+
   if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1, __pyx_L1_error)
 
   return 0;
@@ -5845,7 +5845,7 @@ static CYTHON_INLINE int __Pyx_PyObject_CompareBoolEq_str_str(PyObject *op1, PyO
     if (unlikely(op2 == Py_None)) {
         if (op1 == Py_None) goto __pyx_return_true; else goto __pyx_return_false;
     }
-    
+
     if (likely(op1 != Py_None)) {
         if (op1 == op2) goto __pyx_return_true;
         if (likely(op2 != Py_None)) {
@@ -5853,7 +5853,7 @@ static CYTHON_INLINE int __Pyx_PyObject_CompareBoolEq_str_str(PyObject *op1, PyO
         }
         goto __pyx_richcmp;
     }
-    
+
     if ((0)) goto __pyx_richcmp;
     if ((0)) goto __pyx_return_true;
     if ((0)) goto __pyx_return_false;
