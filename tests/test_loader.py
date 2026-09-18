@@ -599,3 +599,82 @@ def test_getting_annotation(mock_yaml: None) -> None:
     """Test we can fetch annotations in pure python."""
     data = yaml_loader.load_yaml(YAML_CONFIG_FILE)
     assert _get_annotation(data) == ("test.yaml", 1)
+
+
+def _write(path: pathlib.Path, content: str) -> None:
+    """Write a YAML file, creating parent directories as needed."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content)
+
+
+@pytest.mark.usefixtures("try_both_loaders")
+def test_loaded_paths_records_include_graph(tmp_path: pathlib.Path) -> None:
+    """Test every file reached by an include is reported."""
+    root = tmp_path / "configuration.yaml"
+    nested = tmp_path / "a" / "one.yaml"
+    deeper = tmp_path / "a" / "b" / "two.yaml"
+    scalar = tmp_path / "flag.yaml"
+
+    _write(root, "one: !include a/one.yaml\nflag: !include flag.yaml\n")
+    _write(nested, "two: !include b/two.yaml\n")
+    _write(deeper, "value: deep\n")
+    # A scalar cannot carry an annotation, so it can only be found this way.
+    _write(scalar, "true\n")
+
+    loaded_paths: set[str] = set()
+    doc = yaml_loader.load_yaml(root, None, loaded_paths)
+
+    assert doc == {"one": {"two": {"value": "deep"}}, "flag": True}
+    assert loaded_paths == {str(root), str(nested), str(deeper), str(scalar)}
+
+
+@pytest.mark.usefixtures("try_both_loaders")
+def test_loaded_paths_records_include_dirs(tmp_path: pathlib.Path) -> None:
+    """Test directories consulted by an include_dir tag are reported."""
+    root = tmp_path / "configuration.yaml"
+    views = tmp_path / "views"
+    nested_dir = views / "sub"
+
+    _write(root, "views: !include_dir_list views\n")
+    _write(views / "one.yaml", "title: One\n")
+    _write(nested_dir / "two.yaml", "title: Two\n")
+
+    loaded_paths: set[str] = set()
+    yaml_loader.load_yaml(root, None, loaded_paths)
+
+    # The directories matter as well as their files: adding a file changes only
+    # the directory's mtime.
+    assert str(views) in loaded_paths
+    assert str(nested_dir) in loaded_paths
+    assert str(views / "one.yaml") in loaded_paths
+    assert str(nested_dir / "two.yaml") in loaded_paths
+
+
+@pytest.mark.usefixtures("try_both_loaders")
+def test_loaded_paths_records_missing_dir_and_normalises(
+    tmp_path: pathlib.Path,
+) -> None:
+    """Test an absent include dir is reported, and paths are normalised."""
+    root = tmp_path / "configuration.yaml"
+    _write(
+        root,
+        "gone: !include_dir_list views/../absent\nkeep: !include ./keep.yaml\n",
+    )
+    _write(tmp_path / "keep.yaml", "value: 1\n")
+
+    loaded_paths: set[str] = set()
+    yaml_loader.load_yaml(root, None, loaded_paths)
+
+    assert str(tmp_path / "absent") in loaded_paths
+    assert str(tmp_path / "keep.yaml") in loaded_paths
+    assert not any(".." in path or "/./" in path for path in loaded_paths)
+
+
+@pytest.mark.usefixtures("try_both_loaders")
+def test_loaded_paths_is_optional(tmp_path: pathlib.Path) -> None:
+    """Test loading without asking for paths still works."""
+    root = tmp_path / "configuration.yaml"
+    _write(root, "one: !include one.yaml\n")
+    _write(tmp_path / "one.yaml", "value: 1\n")
+
+    assert yaml_loader.load_yaml(root) == {"one": {"value": 1}}
