@@ -45,7 +45,7 @@ jobs:
           REQUIRED_CYTHON=1 poetry install --only=main,dev
         shell: bash
       - name: Run benchmarks
-        uses: CodSpeedHQ/action@373d6868929f444bc08d901fd0eb0ad52a8875ea # v5
+        uses: CodSpeedHQ/action@821a40cd6c80e3cfe387caf55668287addd808da # v5
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
           run: poetry run pytest tests/benchmarks --codspeed
@@ -258,7 +258,7 @@ jobs:
             echo "CIBW_BUILD=${{ matrix.pyver }}*" >> $GITHUB_ENV
           fi
       - name: Build wheels
-        uses: pypa/cibuildwheel@v4.1.0
+        uses: pypa/cibuildwheel@v4.3.1
         env:
           CIBW_SKIP: cp36-* cp37-* cp38-* cp39-* cp310-* cp311-* cp312-* pp* ${{ matrix.musl == 'musllinux' && '*manylinux*' || '*musllinux*' }}
           REQUIRE_CYTHON: 1
