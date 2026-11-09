@@ -44,7 +44,7 @@ repos:
       - id: prettier
         args: ["--tab-width", "2"]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.17.3
+    rev: v0.17.4
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -61,7 +61,7 @@ repos:
         additional_dependencies: ["types-PyYAML"]
         exclude: "tests"
   - repo: https://github.com/MarcoGorelli/cython-lint
-    rev: v0.22.0
+    rev: v0.22.1
     hooks:
       - id: cython-lint
       - id: double-quote-cython-strings
