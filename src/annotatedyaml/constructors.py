@@ -17,6 +17,11 @@ if TYPE_CHECKING:
 _LOGGER = logging.getLogger(__name__)
 
 
+def _get_input_name(loader: LoaderType) -> str:
+    """Return the stream name, or the loader name when that is empty."""
+    return loader.get_stream_name or loader.get_name
+
+
 def _handle_mapping_tag(
     loader: LoaderType, node: yaml.nodes.MappingNode
 ) -> NodeDictClass:
@@ -42,11 +47,10 @@ def _handle_mapping_tag(
         try:
             hash(key)
         except TypeError as exc:
-            fname = loader.get_stream_name
             raise yaml.MarkedYAMLError(
                 context=f'invalid key: "{key}"',
                 context_mark=yaml.Mark(
-                    fname,
+                    _get_input_name(loader),
                     0,
                     line,
                     -1,
@@ -56,13 +60,12 @@ def _handle_mapping_tag(
             ) from exc
 
         if key in seen:
-            fname = loader.get_stream_name
             _LOGGER.warning(
                 'YAML file %s contains duplicate key "%s". Check lines %d and %d',
-                fname,
+                _get_input_name(loader),
                 key,
-                seen[key],
-                line,
+                seen[key] + 1,
+                line + 1,
             )
         seen[key] = line
 
