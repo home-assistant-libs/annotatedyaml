@@ -125,7 +125,12 @@ class _LoaderMixin:
 class FastSafeLoader(FastestAvailableSafeLoader, _LoaderMixin):
     """The fastest available safe loader, either C or Python."""
 
-    def __init__(self, stream: Any, secrets: Secrets | None = None) -> None:
+    def __init__(
+        self,
+        stream: Any,
+        secrets: Secrets | None = None,
+        loaded_paths: set[str] | None = None,
+    ) -> None:
         """Initialize a safe line loader."""
         self.stream = stream
 
@@ -139,32 +144,58 @@ class FastSafeLoader(FastestAvailableSafeLoader, _LoaderMixin):
 
         super().__init__(stream)
         self.secrets = secrets
+        self.loaded_paths = loaded_paths
 
 
 class PythonSafeLoader(yaml.SafeLoader, _LoaderMixin):
     """Python safe loader."""
 
-    def __init__(self, stream: Any, secrets: Secrets | None = None) -> None:
+    def __init__(
+        self,
+        stream: Any,
+        secrets: Secrets | None = None,
+        loaded_paths: set[str] | None = None,
+    ) -> None:
         """Initialize a safe line loader."""
         super().__init__(stream)
         self.secrets = secrets
+        self.loaded_paths = loaded_paths
 
 
 type LoaderType = FastSafeLoader | PythonSafeLoader
 
 
+def _record_path(loaded_paths: set[str] | None, path: str | os.PathLike[str]) -> None:
+    """Record a path that was consulted, normalised so spellings compare equal."""
+    if loaded_paths is not None:
+        loaded_paths.add(os.path.normpath(path))
+
+
 def load_yaml(
-    fname: str | os.PathLike[str], secrets: Secrets | None = None
+    fname: str | os.PathLike[str],
+    secrets: Secrets | None = None,
+    *,
+    loaded_paths: set[str] | None = None,
 ) -> JSON_TYPE | None:
     """
     Load a YAML file.
 
     If opening the file raises an OSError it will be wrapped in a YAMLException,
     except for FileNotFoundError which will be re-raised.
+
+    When ``loaded_paths`` is given, every file read and every directory
+    consulted by an ``!include``-family tag is added to it. A caller can use
+    that to tell when the result would change, without repeating the include
+    rules itself.
+
+    ``loaded_paths`` is keyword-only on purpose: integrations are known to
+    replace this function with one taking a different third positional
+    argument, and a silently mis-bound set would be worse than a clear error.
     """
+    _record_path(loaded_paths, fname)
     try:
         with open(fname, encoding="utf-8") as conf_file:
-            return parse_yaml(conf_file, secrets)
+            return parse_yaml(conf_file, secrets, loaded_paths=loaded_paths)
     except UnicodeDecodeError as exc:
         _LOGGER.error("Unable to read file %s: %s", fname, exc)
         raise YAMLException(exc) from exc
@@ -175,7 +206,10 @@ def load_yaml(
 
 
 def load_yaml_dict(
-    fname: str | os.PathLike[str], secrets: Secrets | None = None
+    fname: str | os.PathLike[str],
+    secrets: Secrets | None = None,
+    *,
+    loaded_paths: set[str] | None = None,
 ) -> dict:
     """
     Load a YAML file and ensure the top level is a dict.
@@ -183,7 +217,7 @@ def load_yaml_dict(
     Raise if the top level is not a dict.
     Return an empty dict if the file is empty.
     """
-    loaded_yaml = load_yaml(fname, secrets)
+    loaded_yaml = load_yaml(fname, secrets, loaded_paths=loaded_paths)
     if loaded_yaml is None:
         loaded_yaml = {}
     if not isinstance(loaded_yaml, dict):
@@ -192,28 +226,36 @@ def load_yaml_dict(
 
 
 def parse_yaml(
-    content: str | TextIO | StringIO, secrets: Secrets | None = None
+    content: str | TextIO | StringIO,
+    secrets: Secrets | None = None,
+    *,
+    loaded_paths: set[str] | None = None,
 ) -> JSON_TYPE:
     """Parse YAML with the fastest available loader."""
     if not HAS_C_LOADER:
-        return _parse_yaml_python(content, secrets)
+        return _parse_yaml_python(content, secrets, loaded_paths=loaded_paths)
     try:
-        return _parse_yaml(FastSafeLoader, content, secrets)
+        return _parse_yaml(FastSafeLoader, content, secrets, loaded_paths=loaded_paths)
     except yaml.YAMLError:
         # Loading failed, so we now load with the Python loader which has more
         # readable exceptions
         if isinstance(content, (StringIO, TextIO, TextIOWrapper)):
             # Rewind the stream so we can try again
             content.seek(0, 0)
-        return _parse_yaml_python(content, secrets)
+        return _parse_yaml_python(content, secrets, loaded_paths=loaded_paths)
 
 
 def _parse_yaml_python(
-    content: str | TextIO | StringIO, secrets: Secrets | None = None
+    content: str | TextIO | StringIO,
+    secrets: Secrets | None = None,
+    *,
+    loaded_paths: set[str] | None = None,
 ) -> JSON_TYPE:
     """Parse YAML with the python loader (this is very slow)."""
     try:
-        return _parse_yaml(PythonSafeLoader, content, secrets)
+        return _parse_yaml(
+            PythonSafeLoader, content, secrets, loaded_paths=loaded_paths
+        )
     except yaml.YAMLError as exc:
         _LOGGER.error(str(exc))
         raise YAMLException(exc) from exc
@@ -223,9 +265,16 @@ def _parse_yaml(
     loader: type[FastSafeLoader | PythonSafeLoader],
     content: str | TextIO,
     secrets: Secrets | None = None,
+    *,
+    loaded_paths: set[str] | None = None,
 ) -> JSON_TYPE:
     """Load a YAML file."""
-    return yaml.load(content, Loader=lambda stream: loader(stream, secrets))  # type: ignore[arg-type]  # noqa: S506
+    return yaml.load(
+        content,
+        Loader=lambda stream: loader(  # type: ignore[arg-type]  # noqa: S506
+            stream, secrets, loaded_paths
+        ),
+    )
 
 
 def _raise_if_no_value[NodeT: yaml.nodes.Node, R](
@@ -250,7 +299,7 @@ def _include_yaml(loader: LoaderType, node: yaml.nodes.Node) -> JSON_TYPE:
     """
     fname = os.path.join(os.path.dirname(loader.get_name), node.value)
     try:
-        loaded_yaml = load_yaml(fname, loader.secrets)
+        loaded_yaml = load_yaml(fname, loader.secrets, loaded_paths=loader.loaded_paths)
         if loaded_yaml is None:
             loaded_yaml = NodeDictClass()
         return _add_reference(loaded_yaml, loader, node)
@@ -263,9 +312,18 @@ def _is_file_valid(name: str) -> bool:
     return not name.startswith(".")
 
 
-def _find_files(directory: str, pattern: str) -> Iterator[str]:
-    """Recursively load files in a directory."""
+def _find_files(
+    directory: str, pattern: str, loaded_paths: set[str] | None = None
+) -> Iterator[str]:
+    """
+    Recursively load files in a directory.
+
+    The directory itself is recorded even when it does not exist: its mtime is
+    what changes when a file is added to or removed from it.
+    """
+    _record_path(loaded_paths, directory)
     for root, dirs, files in os.walk(directory, topdown=True):
+        _record_path(loaded_paths, root)
         dirs[:] = [d for d in dirs if _is_file_valid(d)]
         for basename in sorted(files):
             if _is_file_valid(basename) and fnmatch.fnmatch(basename, pattern):
@@ -278,11 +336,11 @@ def _include_dir_named_yaml(loader: LoaderType, node: yaml.nodes.Node) -> NodeDi
     """Load multiple files from directory as a dictionary."""
     mapping = NodeDictClass()
     loc = os.path.join(os.path.dirname(loader.get_name), node.value)
-    for fname in _find_files(loc, "*.yaml"):
+    for fname in _find_files(loc, "*.yaml", loader.loaded_paths):
         filename = os.path.splitext(os.path.basename(fname))[0]
         if os.path.basename(fname) == SECRET_YAML:
             continue
-        loaded_yaml = load_yaml(fname, loader.secrets)
+        loaded_yaml = load_yaml(fname, loader.secrets, loaded_paths=loader.loaded_paths)
         if loaded_yaml is None:
             # Special case, an empty file included by !include_dir_named is treated
             # as an empty dictionary
@@ -299,10 +357,10 @@ def _include_dir_merge_named_yaml(
     """Load multiple files from directory as a merged dictionary."""
     mapping = NodeDictClass()
     loc = os.path.join(os.path.dirname(loader.get_name), node.value)
-    for fname in _find_files(loc, "*.yaml"):
+    for fname in _find_files(loc, "*.yaml", loader.loaded_paths):
         if os.path.basename(fname) == SECRET_YAML:
             continue
-        loaded_yaml = load_yaml(fname, loader.secrets)
+        loaded_yaml = load_yaml(fname, loader.secrets, loaded_paths=loader.loaded_paths)
         if isinstance(loaded_yaml, dict):
             mapping.update(loaded_yaml)
     _add_reference_to_node_class(mapping, loader, node)
@@ -317,9 +375,14 @@ def _include_dir_list_yaml(
     loc = os.path.join(os.path.dirname(loader.get_name), node.value)
     return [
         loaded_yaml
-        for f in _find_files(loc, "*.yaml")
+        for f in _find_files(loc, "*.yaml", loader.loaded_paths)
         if os.path.basename(f) != SECRET_YAML
-        and (loaded_yaml := load_yaml(f, loader.secrets)) is not None
+        and (
+            loaded_yaml := load_yaml(
+                f, loader.secrets, loaded_paths=loader.loaded_paths
+            )
+        )
+        is not None
     ]
 
 
@@ -330,10 +393,10 @@ def _include_dir_merge_list_yaml(
     """Load multiple files from directory as a merged list."""
     loc: str = os.path.join(os.path.dirname(loader.get_name), node.value)
     merged_list: list[JSON_TYPE] = []
-    for fname in _find_files(loc, "*.yaml"):
+    for fname in _find_files(loc, "*.yaml", loader.loaded_paths):
         if os.path.basename(fname) == SECRET_YAML:
             continue
-        loaded_yaml = load_yaml(fname, loader.secrets)
+        loaded_yaml = load_yaml(fname, loader.secrets, loaded_paths=loader.loaded_paths)
         if isinstance(loaded_yaml, list):
             merged_list.extend(loaded_yaml)
     return _add_reference(merged_list, loader, node)
