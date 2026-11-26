@@ -421,7 +421,39 @@ def test_representing_yaml_loaded_data(mock_yaml: None) -> None:
 def test_duplicate_key(caplog: pytest.LogCaptureFixture, mock_yaml: None) -> None:
     """Test duplicate dict keys."""
     yaml_loader.load_yaml(YAML_CONFIG_FILE)
-    assert "contains duplicate key" in caplog.text
+    assert (
+        'YAML file test.yaml contains duplicate key "key". Check lines 1 and 2'
+        in caplog.text
+    )
+
+
+@pytest.mark.usefixtures("try_both_loaders")
+@pytest.mark.parametrize(
+    ("kind", "expected_name"),
+    [
+        ("str", "<unicode string>"),
+        ("stringio", "<file>"),
+        ("named", "automations.yaml"),
+    ],
+)
+def test_duplicate_key_names_input_with_one_based_lines(
+    caplog: pytest.LogCaptureFixture,
+    kind: str,
+    expected_name: str,
+) -> None:
+    """Duplicate-key warnings name the input and use 1-based lines."""
+    # Blank first line so the keys are not on lines 1 and 2.
+    content = "\ncolor: red\ncolor: blue\n"
+    if kind == "str":
+        yaml_loader.parse_yaml(content)
+    else:
+        stream = io.StringIO(content)
+        if kind == "named":
+            stream.name = expected_name
+        yaml_loader.parse_yaml(stream)
+    assert (
+        f'YAML file {expected_name} contains duplicate key "color". Check lines 2 and 3'
+    ) in caplog.text
 
 
 @pytest.mark.parametrize(
